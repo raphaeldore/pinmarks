@@ -19,9 +19,9 @@ logs
 *.ipr
 
 #Eclipse-specific
-#.settings/
-#.classpath
-#.project
+.settings/
+.classpath
+.project
 nb-configuration.xml
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml

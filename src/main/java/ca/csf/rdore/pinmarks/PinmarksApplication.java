@@ -6,6 +6,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
+import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
 import ca.csf.rdore.pinmarks.resources.PinmarksResource;
 
@@ -35,11 +36,13 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final PinmarksResource resource =
         new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());
     final IndexResource indexResource = new IndexResource();
+    final AddBookmarkResource addBookmarkResource = new AddBookmarkResource();
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
     environment.healthChecks().register("template", healthCheck);
     environment.jersey().register(resource);
     environment.jersey().register(indexResource);
+    environment.jersey().register(addBookmarkResource);
   }
 
 }

@@ -21,7 +21,7 @@
 				<li><a href='/'>Home</a></li>
 				<li><a href='#'>Bookmarks</a></li>
 				<li><a href="/addBookmark" target="AddBookmark"
-					onclick="PopupCenter('/addBookmark','Add Bookmark','700','350'); return false;"
+					onclick="PopupCenter('/addBookmark','AddBookmark','700','350'); return false;"
 					title="Add a bookmark to your collection">Add Bookmark</a></li>
 			</ul>
 		</div>
@@ -147,63 +147,40 @@
 	<script type="text/javascript">
 		var windowObjectReference = null; // global variable
 
-		function openAddBookmarkPopup() {
+		/* Based on:
+		 * https://developer.mozilla.org/en-US/docs/Web/API/Window.open#Best_practices
+		 * http://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen
+		 */
+		function PopupCenter(url, title, w, h) {
+			// Fixes dual-screen position                         Most browsers      Firefox
+			var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft
+					: screen.left;
+			var dualScreenTop = window.screenTop != undefined ? window.screenTop
+					: screen.top;
+
+			width = window.innerWidth ? window.innerWidth
+					: document.documentElement.clientWidth ? document.documentElement.clientWidth
+							: screen.width;
+			height = window.innerHeight ? window.innerHeight
+					: document.documentElement.clientHeight ? document.documentElement.clientHeight
+							: screen.height;
+
+			var left = ((width / 2) - (w / 2)) + dualScreenLeft;
+			var top = ((height / 2) - (h / 2)) + dualScreenTop;
+
 			if (windowObjectReference == null || windowObjectReference.closed)
 			/* if the pointer to the window object in memory does not exist
 			   or if such pointer exists but the window was closed */
 
 			{
-				windowObjectReference = window.open("/addBookmark",
-						"AddBookmark",
-						"resizable,scrollbars,status,width=700,height=350");
+				windowObjectReference = window.open(url, title,
+						'resizable, scrollbars, status, width=' + w
+								+ ', height=' + h + ', top=' + top + ', left='
+								+ left);
 				/* then create it. The new window will be created and
 				   will be brought on top of any other window. */
 			} else {
 				windowObjectReference.focus();
-				/* else the window reference must exist and the window
-				   is not closed; therefore, we can bring it back on top of any other
-				   window with the focus() method. There would be no need to re-create
-				   the window or to reload the referenced resource. */
-			}
-			;
-
-			/* Based on:
-			 * https://developer.mozilla.org/en-US/docs/Web/API/Window.open#Best_practices
-			 * http://stackoverflow.com/questions/4068373/center-a-popup-window-on-screen
-			 */
-			function PopupCenter(url, title, w, h) {
-				// Fixes dual-screen position                         Most browsers      Firefox
-				var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft
-						: screen.left;
-				var dualScreenTop = window.screenTop != undefined ? window.screenTop
-						: screen.top;
-
-				width = window.innerWidth ? window.innerWidth
-						: document.documentElement.clientWidth ? document.documentElement.clientWidth
-								: screen.width;
-				height = window.innerHeight ? window.innerHeight
-						: document.documentElement.clientHeight ? document.documentElement.clientHeight
-								: screen.height;
-
-				var left = ((width / 2) - (w / 2)) + dualScreenLeft;
-				var top = ((height / 2) - (h / 2)) + dualScreenTop;
-
-				if (windowObjectReference == null
-						|| windowObjectReference.closed)
-				/* if the pointer to the window object in memory does not exist
-				   or if such pointer exists but the window was closed */
-
-				{
-					windowObjectReference = window.open(url, title,
-							'resizable, scrollbars, status, width=' + w
-									+ ', height=' + h + ', top=' + top
-									+ ', left=' + left);
-					/* then create it. The new window will be created and
-					   will be brought on top of any other window. */
-				} else {
-					windowObjectReference.focus();
-				}
-
 			}
 		}
 	</script>

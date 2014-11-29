@@ -23,9 +23,10 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
 
   @Override
   public void initialize(Bootstrap<PinmarksConfiguration> bootstrap) {
-    bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/css", "/css", null, "css"));
-    bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/js", "/js", null, "js"));
-    bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/fonts", "/fonts", null, "fonts"));
+    bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/css", "/bootstrapCss", null, "bootstrapCss"));
+    bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/js", "/bootstrapJs", null, "bootstrapJs"));
+    bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/fonts", "/fonts", null, "bootstrapFonts"));
+    bootstrap.addBundle(new AssetsBundle("/assets/css/", "/css", null, "css"));
     bootstrap.addBundle(new ViewBundle());
   }
 

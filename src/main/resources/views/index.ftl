@@ -1,78 +1,36 @@
 <#-- @ftlvariable name="" type="ca.csf.rdore.pinmarks.views.IndexView" -->
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
-		<link rel="stylesheet" type="text/css" href="/css/bootstrap-theme.css">
-		<style type="text/css">
-    	body {
-      		padding-top:60px;
-      		padding-bottom: 60px;
-    	}
-  		</style>
-	</head>
-    <body>
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">Brand</a>
+
+<head>
+    <title>Pinmarks</title>
+    <meta charset="utf-8">
+    <meta name="description" content="A beautiful CSS framework in under 2 KiB">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bijou.css">
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+
+<body>
+    <div class='navbar fixed'>
+        <div class='container'>
+            <h4 class='pull-left'>Pinmarks</h4>
+            <ul class='pull-right'>
+            	<li><a href='/'>Home</a></li>
+                <li><a href='#'>Bookmarks</a></li>
+                <li><a href='#'>Tags</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class='container'>
+        <h1>Pinmarks</h1>
+        <p>Lorem ipsum Enim deserunt fugiat officia elit amet consectetur sed dolor Ut incididunt fugiat cupidatat ea nostrud sed cillum Duis amet do consectetur commodo sed aute deserunt in sunt et labore magna aliqua labore est tempor laborum do enim commodo voluptate Excepteur aute ullamco culpa Excepteur esse Excepteur eiusmod nostrud exercitation in adipisicing dolor anim id eu occaecat qui dolore cupidatat ea nostrud Ut commodo qui culpa in eu adipisicing dolor ad enim dolor sunt proident consequat cillum exercitation sint aliquip adipisicing do do do reprehenderit consectetur ullamco mollit mollit adipisicing amet Duis mollit cupidatat cillum eu proident Duis labore dolor mollit laborum do ut esse dolore in est anim ex irure dolor quis labore ex cillum velit occaecat in Excepteur magna mollit minim amet ullamco in aliqua pariatur ea non sint occaecat deserunt dolore ut deserunt sint nulla dolor occaecat do dolore commodo et esse anim magna eu in cillum ad sed velit sit labore minim eiusmod qui mollit dolor magna ex velit do nisi tempor ea sed culpa sunt pariatur nostrud aliqua consequat enim sed in amet ullamco minim consequat voluptate anim in magna in aute cupidatat adipisicing Ut sint.</p>
+    </div>
+    <div class="container">
+        <footer>
+            &copy; 2014, <a href="http://www.nothingrelevant.org/">Raphaël Doré</a>
+        </footer>
     </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
-        </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+</body>
 
-	<div class="container">
-		<h1>List of Blogs</h1>
-        <ul class="list-unstyled">
-        	<li>Hello</li>
-		</ul>
-	</div>
-        
-        <script src="/js/bootstrap.js"></script>
-    </body>
 </html>

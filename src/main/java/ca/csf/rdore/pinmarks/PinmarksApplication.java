@@ -26,7 +26,6 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/css", "/css", null, "css"));
     bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/js", "/js", null, "js"));
     bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/fonts", "/fonts", null, "fonts"));
-    
     bootstrap.addBundle(new ViewBundle());
   }
 

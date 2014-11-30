@@ -5,6 +5,10 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
@@ -13,6 +17,8 @@ import ca.csf.rdore.pinmarks.resources.PinmarksResource;
 // import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 
 public class PinmarksApplication extends Application<PinmarksConfiguration> {
+  private static final Logger LOGGER = LoggerFactory.getLogger(PinmarksConfiguration.class);
+  
   public static void main(String[] args) throws Exception {
     new PinmarksApplication().run(args);
   }
@@ -33,6 +39,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
 
   @Override
   public void run(PinmarksConfiguration configuration, Environment environment) throws Exception {
+    LOGGER.info("The Application Has Started :) ");
     final PinmarksResource resource =
         new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());
     final IndexResource indexResource = new IndexResource();

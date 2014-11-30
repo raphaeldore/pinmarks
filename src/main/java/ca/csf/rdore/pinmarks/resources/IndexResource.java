@@ -3,6 +3,7 @@ package ca.csf.rdore.pinmarks.resources;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import ca.csf.rdore.pinmarks.views.IndexView;
 
@@ -19,7 +20,7 @@ public class IndexResource {
 
 
   @GET
-  @Produces("text/html;charset=UTF-8")
+  @Produces(MediaType.TEXT_HTML)
   @Timed
   public View index() {
     return new IndexView();

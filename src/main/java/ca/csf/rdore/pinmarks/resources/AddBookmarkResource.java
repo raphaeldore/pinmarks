@@ -10,7 +10,6 @@ import javax.ws.rs.core.MediaType;
 import ca.csf.rdore.pinmarks.views.AddBookmarkView;
 
 @Path("/addBookmark")
-
 public class AddBookmarkResource {
   
   @GET

@@ -9,6 +9,7 @@ import io.dropwizard.views.ViewBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.csf.rdore.pinmarks.exceptions.RuntimeExceptionMapper;
 import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
@@ -47,6 +48,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
     environment.healthChecks().register("template", healthCheck);
+    environment.jersey().register(new RuntimeExceptionMapper());
     environment.jersey().register(resource);
     environment.jersey().register(indexResource);
     environment.jersey().register(addBookmarkResource);

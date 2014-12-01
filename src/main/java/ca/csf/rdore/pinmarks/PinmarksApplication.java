@@ -60,11 +60,11 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     LOGGER.info("The Application Has Started :) ");
 
     final DBIFactory factory = new DBIFactory();
-    final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mysql");
+    final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "pinmarks");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
     environment.jersey().register(new BookmarkResource(bookmarkDao));
     
-    bookmarkDao.insert(1, "http://patate.com");
+    // bookmarkDao.insert(1, "http://patate.com");
 
     // final PinmarksResource resource =
     // new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());

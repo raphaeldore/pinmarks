@@ -2,7 +2,7 @@ template: Hello, %s!
 
 database:
   # the name of your JDBC driver
-  driverClass: com.mysql.jdbc.Driver
+  driverClass: org.h2.Driver
 
   # the username
   user: pinmarks
@@ -11,7 +11,7 @@ database:
   password: supersecretpassword
 
   # the JDBC URL
-  url: jdbc:mysql://localhost:3306/pinmarks
+  url: jdbc:h2:./target/pinmarksdb
 
   # any properties specific to your JDBC driver:
   properties:

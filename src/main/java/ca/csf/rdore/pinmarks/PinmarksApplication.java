@@ -9,6 +9,10 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +23,6 @@ import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
 import ca.csf.rdore.pinmarks.resources.BookmarkResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
-import ca.csf.rdore.pinmarks.resources.PinmarksResource;
 
 // import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 
@@ -63,8 +66,20 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "pinmarks");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
     environment.jersey().register(new BookmarkResource(bookmarkDao));
-    
+
     // bookmarkDao.insert(1, "http://patate.com");
+
+    String description =
+        "Yes, even if you can't believe it, there are a lot fans of the 30-years-old vi editor (or its more recent, just-15-years-old, best clone & great improvement, vim).";
+
+    List<String> tags = new ArrayList<String>();
+    tags.add("vim");
+    tags.add("programming");
+    tags.add("editor");
+    tags.add("emacs");
+    
+    bookmarkDao.insert(1, "Why, oh WHY, do those #?@! nutheads use vi?",
+        "http://www.viemu.com/a-why-vi-vim.html", description, tags, DateTime.now());
 
     // final PinmarksResource resource =
     // new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());

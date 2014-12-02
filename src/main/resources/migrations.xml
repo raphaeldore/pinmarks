@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="rdore">
-        <createTable tableName="bookmark">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="title" type="VARCHAR(255)"></column>
-            <column name="url" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="description" type="TEXT"/>
-            <column name="tags" type="ARRAY"/>
-            <column name="dateAdded" type="TIME"/>
-        </createTable>
-    </changeSet>
+	<changeSet id="1" author="rdore">
+		<createTable tableName="bookmark">
+			<column name="bookmark_id" type="INT" autoIncrement="true">
+				<constraints primaryKey="true" nullable="false" />
+			</column>
+			<column name="title" type="VARCHAR(255)"></column>
+			<column name="url" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="TEXT" />
+			<column name="dateAdded" type="TIMESTAMP" />
+		</createTable>
+	</changeSet>
+
+	<changeSet id="2" author="rdore">
+		<createTable tableName="tag">
+			<column name="id" type="INT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"></constraints>
+			</column>
+			<column name="bookmark_id" type="INT">
+			</column>
+			<column name="tag_text" type="VARCHAR(32)">
+				<constraints nullable="false"></constraints>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="3" author="rdore">
+		<addForeignKeyConstraint baseColumnNames="bookmark_id"
+			baseTableName="tag" constraintName="fk_bookmark" onDelete="CASCADE"
+			onUpdate="RESTRICT" referencedColumnNames="bookmark_id" referencedTableName="bookmark" />
+	</changeSet>
+
+
 </databaseChangeLog>

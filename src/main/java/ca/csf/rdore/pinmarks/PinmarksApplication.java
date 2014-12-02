@@ -9,6 +9,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,10 @@ import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import ca.csf.rdore.pinmarks.core.Bookmark;
+import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
+import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.exceptions.RuntimeExceptionMapper;
 import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
@@ -65,6 +69,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final DBIFactory factory = new DBIFactory();
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "pinmarks");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
+    final TagDAO tagDao = jdbi.onDemand(TagDAO.class);
     environment.jersey().register(new BookmarkResource(bookmarkDao));
 
     // bookmarkDao.insert(1, "http://patate.com");
@@ -72,18 +77,32 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     String description =
         "Yes, even if you can't believe it, there are a lot fans of the 30-years-old vi editor (or its more recent, just-15-years-old, best clone & great improvement, vim).";
 
-    List<String> tags = new ArrayList<String>();
-    tags.add("vim");
-    tags.add("programming");
-    tags.add("editor");
-    tags.add("emacs");
-    
-    bookmarkDao.insert("Why, oh WHY, do those #?@! nutheads use vi?",
-        "http://www.viemu.com/a-why-vi-vim.html", description, tags, DateTime.now());
+    DateTime dateTime = new DateTime();
+    Timestamp timeStamp = new Timestamp(dateTime.getMillis());
+
+    Bookmark bookmark =
+        new Bookmark("Why, oh WHY, do those #?@! nutheads use vi",
+            "http://www.viemu.com/a-why-vi-vim.html", description, timeStamp);
+    int newBookmarkID = bookmarkDao.create(bookmark);
+
+    List<Tag> bookmarksTagsList = new ArrayList<Tag>();
+    bookmarksTagsList.add(new Tag("vim", newBookmarkID));
+    bookmarksTagsList.add(new Tag("programming", newBookmarkID));
+    bookmarksTagsList.add(new Tag("editor", newBookmarkID));
+    bookmarksTagsList.add(new Tag("emacs", newBookmarkID));
+    bookmarksTagsList.add(new Tag("awesome", newBookmarkID));
+
+    tagDao.insertTagsBean(bookmarksTagsList);
+
+
+//    List<Bookmark> listOfBookmarks;
+
+//    listOfBookmarks = bookmarkDao.getAllBookmarks();
+//    System.out.println(listOfBookmarks.toString());
 
     // final PinmarksResource resource =
     // new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());
-    final IndexResource indexResource = new IndexResource();
+    final IndexResource indexResource = new IndexResource(bookmarkDao);
     final AddBookmarkResource addBookmarkResource = new AddBookmarkResource();
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 

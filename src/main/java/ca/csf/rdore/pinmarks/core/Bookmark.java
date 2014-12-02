@@ -1,49 +1,41 @@
 package ca.csf.rdore.pinmarks.core;
 
-import java.util.List;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.joda.time.DateTime;
-
-import com.google.common.base.Optional;
 
 public class Bookmark {
 
-  @NotNull
-  private final int id;
+//  @NotNull
+//  private final int id;
 
-  @NotEmpty 
+  @NotEmpty
   private final String title;
 
   @NotEmpty
   private final String url;
 
-  private final Optional<String> description;
-  private final List<String> tags;
+  private final String description;
 
   @NotNull
-  private final DateTime dateAdded;
-
-  private Bookmark(int id, String title, String url, Optional<String> description,
-      List<String> tags, DateTime dateAdded) {
-    this.id = id;
+  private final Timestamp dateAdded;
+  
+  public Bookmark(String title, String url, String description, Timestamp dateAdded) {
     this.title = title;
     this.url = url;
     this.description = description;
-    this.tags = tags;
     this.dateAdded = dateAdded;
   }
 
-  public int getId() {
+/*  public int getId() {
     return id;
   }
-
+*/
   public String getTitle() {
     return title;
   }
@@ -52,21 +44,17 @@ public class Bookmark {
     return url;
   }
 
-  public Optional<String> getDescription() {
+  public String getDescription() {
     return description;
   }
 
-  public List<String> getTags() {
-    return tags;
-  }
-
-  public DateTime getDateAdded() {
+  public Timestamp getDateAdded() {
     return dateAdded;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, url, description, tags, dateAdded);
+    return Objects.hash(title, url, description, dateAdded);
   }
 
   @Override
@@ -81,11 +69,10 @@ public class Bookmark {
     Bookmark bookmark = (Bookmark) o;
 
     /* @formatter:off */
-    return Objects.equals(id, bookmark.id) &&
-        Objects.equals(title, bookmark.title) &&
+    return Objects.equals(title, bookmark.title) &&
         Objects.equals(url, bookmark.url) &&
         Objects.equals(description, bookmark.description) &&
-        Objects.equals(tags, bookmark.tags);
+        Objects.equals(dateAdded, bookmark.dateAdded);
     /* @formatter:on */
   }
 

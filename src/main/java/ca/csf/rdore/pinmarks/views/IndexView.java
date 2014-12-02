@@ -15,5 +15,4 @@ public class IndexView extends View {
   protected IndexView(String templateName, Charset charset) {
     super(templateName, charset);
   }
-
 }

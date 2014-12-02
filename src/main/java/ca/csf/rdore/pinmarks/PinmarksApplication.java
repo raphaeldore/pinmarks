@@ -78,7 +78,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     tags.add("editor");
     tags.add("emacs");
     
-    bookmarkDao.insert(1, "Why, oh WHY, do those #?@! nutheads use vi?",
+    bookmarkDao.insert("Why, oh WHY, do those #?@! nutheads use vi?",
         "http://www.viemu.com/a-why-vi-vim.html", description, tags, DateTime.now());
 
     // final PinmarksResource resource =

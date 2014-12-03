@@ -58,6 +58,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/fonts", "/fonts", null,
         "bootstrapFonts"));
     bootstrap.addBundle(new AssetsBundle("/assets/css/", "/css", null, "css"));
+    bootstrap.addBundle(new AssetsBundle("/assets/img/", "/img", null, "img"));
     bootstrap.addBundle(new ViewBundle());
 
   }
@@ -70,7 +71,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "pinmarks");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
     final TagDAO tagDao = jdbi.onDemand(TagDAO.class);
-    environment.jersey().register(new BookmarkResource(bookmarkDao));
+    environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
 
     // bookmarkDao.insert(1, "http://patate.com");
 

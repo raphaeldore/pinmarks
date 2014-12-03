@@ -1,6 +1,7 @@
 package ca.csf.rdore.pinmarks.daos;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.List;
 
 import org.skife.jdbi.v2.sqlobject.Bind;
@@ -29,7 +30,7 @@ public interface BookmarkDAO {
   Bookmark findById(@Bind int id);
   
   @SqlQuery("select * from bookmark")
-  List<Bookmark> getAllBookmarks();
+  Collection<Bookmark> getAllBookmarks();
 
   void close();
 }

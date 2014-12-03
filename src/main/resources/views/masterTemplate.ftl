@@ -17,7 +17,7 @@
 			<h4 class='pull-left'>Pinmarks</h4>
 			<ul class='pull-right'>
 				<li><a href='/'>Home</a></li>
-				<li><a href='#'>Bookmarks</a></li>
+				<li><a href='/bookmarks'>Bookmarks</a></li>
 				<li><a href="/addBookmark" target="AddBookmark"
 					onclick="PopupCenter('/addBookmark','AddBookmark','700','350'); return false;"
 					title="Add a bookmark to your collection">Add Bookmark</a></li>

@@ -30,7 +30,7 @@ public interface BookmarkDAO {
   Bookmark findById(@Bind int id);
   
   @SqlQuery("select * from bookmark")
-  Collection<Bookmark> getAllBookmarks();
+  List<Bookmark> getAllBookmarks();
 
   void close();
 }

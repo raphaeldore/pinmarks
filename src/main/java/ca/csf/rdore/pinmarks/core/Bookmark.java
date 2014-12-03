@@ -78,6 +78,6 @@ public class Bookmark {
 
   @Override
   public String toString() {
-    return new ReflectionToStringBuilder(this, ToStringStyle.SIMPLE_STYLE).toString();
+    return new ReflectionToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).toString();
   }
 }

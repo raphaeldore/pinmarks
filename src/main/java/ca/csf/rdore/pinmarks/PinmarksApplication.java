@@ -11,7 +11,9 @@ import io.dropwizard.views.ViewBundle;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
@@ -98,10 +100,17 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     tagDao.insertTagsBean(bookmarksTagsList);
 
 
-//    List<Bookmark> listOfBookmarks;
+      List<Bookmark> listOfBookmarks;
 
-//    listOfBookmarks = bookmarkDao.getAllBookmarks();
-//    System.out.println(listOfBookmarks.toString());
+      listOfBookmarks = bookmarkDao.getAllBookmarks();
+      
+      for (Bookmark bookmark2 : listOfBookmarks) {
+        System.out.println(bookmark2.toString());
+      }
+      
+      Map<String, Object> root = new HashMap<String, Object>();
+      root.put("bookmarks", listOfBookmarks);
+      
 
     // final PinmarksResource resource =
     // new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());

@@ -11,9 +11,9 @@ import ca.csf.rdore.pinmarks.core.Bookmark;
 import io.dropwizard.views.View;
 
 public class BookmarksView extends View {
-  Collection<Bookmark> bookmarks;
+  List<Bookmark> bookmarks;
 
-  public BookmarksView(Collection<Bookmark> bookmarks) {
+  public BookmarksView(List<Bookmark> bookmarks) {
     this("/views/bookmarks.ftl", Charsets.UTF_8);
     this.bookmarks = bookmarks;
   }
@@ -22,7 +22,7 @@ public class BookmarksView extends View {
     super(templateName);
   }
 
-  public Collection<Bookmark> getAllBookmarks() {
+  public List<Bookmark> getAllBookmarks() {
     return bookmarks;
   }
 

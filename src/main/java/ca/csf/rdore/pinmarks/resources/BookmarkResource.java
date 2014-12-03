@@ -16,7 +16,7 @@ import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.BookmarkView;
 
-@Path("/bookmark/{id}")
+@Path("/potato")
 @Produces(MediaType.TEXT_HTML)
 // @Consumes("*/*")
 public class BookmarkResource {
@@ -28,7 +28,8 @@ public class BookmarkResource {
     this.bookmarkDao = bookmarkDao;
     this.tagDao = tagDao;
   }
-
+  
+  @Path("{id}")
   @GET
   @Timed
   public BookmarkView getBookmark(@PathParam("id") int id) {

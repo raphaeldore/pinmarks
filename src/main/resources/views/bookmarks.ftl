@@ -3,7 +3,7 @@
 <#import "masterTemplate.ftl" as layout>
 <@layout.layout title="Bookmarks">
 
-<#list bookmarks as bookmark>
+<list bookmarks as bookmark>
 
 <#if (bookmark)??>
 <div class="bookmark">
@@ -23,7 +23,7 @@
             onclick="return deleteBookmark(1)">Delete</a>
     </div>
 </div>
-</#list>
+</list>
 </#if>
 <a href="/"><img src="/img/nothing_here.png" style="display: block; margin-left: auto; margin-right: auto;"></img></a>
 </@layout.layout>

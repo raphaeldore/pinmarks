@@ -6,11 +6,17 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.Charsets;
+import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.GenericType;
 
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import io.dropwizard.views.View;
 
 public class BookmarksView extends View {
+  
+  private static final GenericType<List<Bookmark>> GT_LIST_BOOKMARK = new GenericType<List<Bookmark>>() {};
+
+  
   List<Bookmark> bookmarks;
 
   public BookmarksView(List<Bookmark> bookmarks) {
@@ -23,6 +29,7 @@ public class BookmarksView extends View {
   }
 
   public List<Bookmark> getAllBookmarks() {
+   // List<Bookmark> bookmarks2 = Client.resource("/bookmark").get(GT_LIST_BOOKMARK);
     return bookmarks;
   }
 

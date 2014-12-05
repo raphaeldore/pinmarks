@@ -1,23 +1,14 @@
 <#-- @ftlvariable name="" type="ca.csf.rdore.pinmarks.views.TestView"
 -->
 
-<html>
-<head>
-<title>Pinmarks - Bookmarks</title>
-<meta charset="utf-8">
-<meta name="description" content="Manage your bookmarks!">
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="/css/bijou.css">
-<link rel="stylesheet" href="/css/site.css">
-</head>
-<body>
-<#list bookmarks as item>${item.title}
+<#import "masterTemplate.ftl" as layout>
+<@layout.layout title="Bookmark">
+
+<#list bookmarks as item>
 <div class="bookmark">
 	<h4 class="bookmarkTitle">${item.title}</h4>
 	<a class="bookmarkURL" href="#">${item.url}</a><br/>
-	<p class="bookmarkDescription">
-		${item.description}
-	</p>
+	<p class="bookmarkDescription">${item.description}</p>
 	<ul class="bookmarkTags">
 		<li><a href="#">Tag 1</a></li>
 		<li><a href="#">Tag 2</a></li>
@@ -30,6 +21,4 @@
 	</div>
 </div>
 </#list>
-
-</body>
-</html>
+</@layout.layout>

@@ -13,6 +13,7 @@ import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.BookmarkView;
 import ca.csf.rdore.pinmarks.views.BookmarksView;
+import ca.csf.rdore.pinmarks.views.TestView;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -36,10 +37,10 @@ public class BookmarksResource {
     return new BookmarkView(bookmarkDao.findById(id));
   }
 
-  @Path("/all")
+  // @Path("/all")
   @GET
   @Timed
-  public BookmarksView getAllBookmarks() {
+  public TestView getAllBookmarks() {
     
     List<Bookmark> listOfBookmarks;
 
@@ -57,7 +58,7 @@ public class BookmarksResource {
       }
     }
     
-    return new BookmarksView(listOfBookmarks);
+    return new TestView(listOfBookmarks);
   }
 
 }

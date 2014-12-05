@@ -1,4 +1,4 @@
-<#-- @ftlvariable name="" type="ca.csf.rdore.pinmarks.views.BookmarksView"
+<#-- @ftlvariable name="" type="ca.csf.rdore.pinmarks.views.TestView"
 -->
 
 <h1>Hello</h1>

@@ -74,8 +74,6 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "pinmarks");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
     final TagDAO tagDao = jdbi.onDemand(TagDAO.class);
-    environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
-    environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));
 
     // bookmarkDao.insert(1, "http://patate.com");
 
@@ -123,6 +121,8 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     // environment.jersey().register(resource);
     environment.jersey().register(indexResource);
     environment.jersey().register(addBookmarkResource);
+    environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
+    environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));
   }
 
 }

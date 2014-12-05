@@ -3,7 +3,9 @@ package ca.csf.rdore.pinmarks.views;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Charsets;
 import com.sun.jersey.api.client.Client;
@@ -30,7 +32,11 @@ public class BookmarksView extends View {
 
   public List<Bookmark> getAllBookmarks() {
    // List<Bookmark> bookmarks2 = Client.resource("/bookmark").get(GT_LIST_BOOKMARK);
-    return bookmarks;
+    
+    Map<String, Object> root = new HashMap<String, Object>();
+    root.put("bookmarks", this.bookmarks);
+    
+    return this.bookmarks;
   }
 
 }

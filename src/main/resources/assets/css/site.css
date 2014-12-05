@@ -88,7 +88,7 @@ footer {
 .bookmarksSearch #searchtext {
     overflow: hidden;
 }
-.bookmarksSearch a.search-submit-button {
+.bookmarksSearch button.search-submit-button {
     background: none repeat scroll 0 0 #fafafa;
     border-bottom: 1px solid #eeeeee;
     border-right: 1px solid #eeeeee;

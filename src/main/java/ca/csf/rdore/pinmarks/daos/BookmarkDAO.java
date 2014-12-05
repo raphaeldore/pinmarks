@@ -38,7 +38,7 @@ public interface BookmarkDAO {
   @SqlQuery("select title, url, description, dateAdded from bookmark WHERE <columnName> LIKE :pattern")
   List<Bookmark> findBookmarksByPattern(@Define("columnName") String columnName, @Bind("pattern") String pattern);
   
-  @SqlQuery("select title, url, description, dateAdded from bookmark")
+  @SqlQuery("select title, url, description, dateAdded from bookmark ORDER BY dateAdded DESC")
   List<Bookmark> getAllBookmarks();
 
   void close();

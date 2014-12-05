@@ -112,7 +112,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     environment.healthChecks().register("template", healthCheck);
     environment.jersey().register(new RuntimeExceptionMapper());
     // environment.jersey().register(resource);
-    environment.jersey().register(new IndexResource(bookmarkDao));
+    environment.jersey().register(new IndexResource(bookmarkDao, tagDao));
     environment.jersey().register(new AddBookmarkResource());
     environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
     environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));

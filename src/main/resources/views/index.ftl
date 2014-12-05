@@ -36,78 +36,23 @@
 			<div class="span eight" id="bookmarkSearchResults">
 				<div id="lightbox">Testing out the lightbox</div>
 				<a href="#" id="opener">Click me</a>
-				<div class="bookmark">
-					<h4 class="bookmarkTitle">Bookmark Title</h4>
-					<a class="bookmarkURL" href="#">http://lipsum.com</a> <br />
-					<p class="bookmarkDescription">Bookmark description. Lorem
-						ipsum Sit adipisicing quis dolore in et in in anim cillum enim
-						occaecat eiusmod sit Duis culpa.</p>
-					<ul class="bookmarkTags">
-						<li><a href="#">Tag 1</a></li>
-						<li><a href="#">Tag 2</a></li>
-						<li><a href="#">Tag 3</a></li>
-						<li><a href="#">Tag 4</a></li>
-					</ul>
-					<span>Added {Date}</span>
-					<div class="editBookmark">
-						<a href="#">Edit</a>&nbsp; <a href="#"
-							onclick="return deleteBookmark(1)">Delete</a>
-					</div>
-				</div>
-				<div class="bookmark">
-					<h4 class="bookmarkTitle">Bookmark Title</h4>
-					<a class="bookmarkURL" href="#">http://lipsum.com</a> <br />
-					<p class="bookmarkDescription">Bookmark description. Lorem
-						ipsum Sit adipisicing quis dolore in et in in anim cillum enim
-						occaecat eiusmod sit Duis culpa.</p>
-					<ul class="bookmarkTags">
-						<li><a href="#">Tag 1</a></li>
-						<li><a href="#">Tag 2</a></li>
-						<li><a href="#">Tag 3</a></li>
-						<li><a href="#">Tag 4</a></li>
-					</ul>
-					<span>Added {Date}</span>
-					<div class="editBookmark">
-						<a href="#">Edit</a>&nbsp; <a href="#"
-							onclick="return deleteBookmark(1)">Delete</a>
-					</div>
-				</div>
-				<div class="bookmark">
-					<h4 class="bookmarkTitle">Bookmark Title</h4>
-					<a class="bookmarkURL" href="#">http://lipsum.com</a> <br />
-					<p class="bookmarkDescription">Bookmark description. Lorem
-						ipsum Sit adipisicing quis dolore in et in in anim cillum enim
-						occaecat eiusmod sit Duis culpa.</p>
-					<ul class="bookmarkTags">
-						<li><a href="#">Tag 1</a></li>
-						<li><a href="#">Tag 2</a></li>
-						<li><a href="#">Tag 3</a></li>
-						<li><a href="#">Tag 4</a></li>
-					</ul>
-					<span>Added {Date}</span>
-					<div class="editBookmark">
-						<a href="#">Edit</a>&nbsp; <a href="#"
-							onclick="return deleteBookmark(1)">Delete</a>
-					</div>
-				</div>
-				<div class="bookmark">
-					<h4 class="bookmarkTitle">Bookmark Title</h4>
-					<a class="bookmarkURL" href="#">http://lipsum.com</a> <br />
-					<p class="bookmarkDescription">Bookmark description. Lorem
-						ipsum Sit adipisicing quis dolore in et in in anim cillum enim
-						occaecat eiusmod sit Duis culpa.</p>
-					<ul class="bookmarkTags">
-						<li><a href="#">Tag 1</a></li>
-						<li><a href="#">Tag 2</a></li>
-						<li><a href="#">Tag 3</a></li>
-						<li><a href="#">Tag 4</a></li>
-					</ul>
-					<span>Added {Date}</span>
-					<div class="editBookmark">
-						<a href="#">Edit</a>&nbsp; <a href="#"
-							onclick="return deleteBookmark(1)">Delete</a>
-					</div>
-				</div>
+				<#list bookmarks as item>
+<div class="bookmark">
+	<h4 class="bookmarkTitle">${item.title}</h4>
+	<a class="bookmarkURL" href="#">${item.url}</a><br/>
+	<p class="bookmarkDescription">${item.description}</p>
+	<ul class="bookmarkTags">
+		<li><a href="#">Tag 1</a></li>
+		<li><a href="#">Tag 2</a></li>
+		<li><a href="#">Tag 3</a></li>
+		<li><a href="#">Tag 4</a></li>
+	</ul>
+	<span>Added ${item.dateAdded}</span>
+	<div class="editBookmark">
+		<a href="#">Edit</a>&nbsp; <a href="#" onclick="return deleteBookmark(1)">Delete</a>
+	</div>
+</div>
+</#list>
 
 			</div>
 			<div class="span four">Tags....</div>

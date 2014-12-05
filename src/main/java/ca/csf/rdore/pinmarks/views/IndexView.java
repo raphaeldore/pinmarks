@@ -1,18 +1,22 @@
 package ca.csf.rdore.pinmarks.views;
 
-import java.nio.charset.Charset;
-
-import com.google.common.base.Charsets;
-
 import io.dropwizard.views.View;
+
+import java.util.List;
+
+import ca.csf.rdore.pinmarks.core.Bookmark;
 
 public class IndexView extends View {
 
-  public IndexView() {
-    this("/views/index.ftl", Charsets.UTF_8);
+  List<Bookmark> bookmarks;
+
+  public IndexView(List<Bookmark> bookmarks) {
+    super("/views/index.ftl");
+    this.bookmarks = bookmarks;
   }
   
-  protected IndexView(String templateName, Charset charset) {
-    super(templateName, charset);
+  public List<Bookmark> getBookmarks() {
+    return bookmarks;
   }
+
 }

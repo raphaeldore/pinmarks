@@ -6,6 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
+import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.BookmarksView;
 import ca.csf.rdore.pinmarks.views.IndexView;
 
@@ -17,21 +18,24 @@ import io.dropwizard.views.*;
 public class IndexResource {
 
   BookmarkDAO bookmarkDao;
-  
-  public IndexResource(BookmarkDAO bookmarkDao) {
+  TagDAO tagDao;
+
+  public IndexResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
     this.bookmarkDao = bookmarkDao;
+    this.tagDao = tagDao;
   }
 
   @GET
   @Produces(MediaType.TEXT_HTML)
   @Timed
-  public View index() {
-    return new IndexView();
+  public IndexView index() {
+    return new IndexView(bookmarkDao.getAllBookmarks());
   }
-  
+
 /*  @GET
   public BookmarksView getBookmarks() {
-    return new BookmarksView(bookmarkDao.getAllBookmarks());
-  }  */
+    BookmarksResource bookmarksResource = new BookmarksResource(bookmarkDao, tagDao);
+    return bookmarksResource.getBookmarks();
+  }*/
 
 }

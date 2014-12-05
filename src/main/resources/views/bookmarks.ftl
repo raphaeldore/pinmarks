@@ -4,7 +4,7 @@
 <h1>Hello</h1>
 
 <#list bookmarks as bookmark>
-   Hi ${bookmark.title}, How are you?
+   Hi ${bookmark}, How are you?
 </#list>
 
 <#if bookmarks ??>

@@ -30,6 +30,7 @@ import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
 import ca.csf.rdore.pinmarks.resources.BookmarkResource;
 import ca.csf.rdore.pinmarks.resources.BookmarksResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
+import ca.csf.rdore.pinmarks.resources.TestResource;
 
 // import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 
@@ -123,6 +124,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     environment.jersey().register(addBookmarkResource);
     environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
     environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));
+    environment.jersey().register(new TestResource(bookmarkDao));
   }
 
 }

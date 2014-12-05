@@ -6,7 +6,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
-import ca.csf.rdore.pinmarks.views.TestView;
+import ca.csf.rdore.pinmarks.views.BookmarksView;
+import ca.csf.rdore.pinmarks.views.BookmarksView;
 
 @Path("/test")
 @Produces(MediaType.TEXT_HTML)
@@ -18,8 +19,8 @@ public class TestResource {
   }
   
   @GET
-  public TestView getBookmarks() {
-    return new TestView(bookmarkDao.getAllBookmarks());
+  public BookmarksView getBookmarks() {
+    return new BookmarksView(bookmarkDao.getAllBookmarks());
   }
   
   

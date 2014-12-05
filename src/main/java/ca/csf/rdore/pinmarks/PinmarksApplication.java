@@ -107,24 +107,16 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
       System.out.println(bookmark2.toString());
     }
 
-    Map<String, Object> root = new HashMap<String, Object>();
-    root.put("bookmarks", listOfBookmarks);
-
-
-    // final PinmarksResource resource =
-    // new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());
-    final IndexResource indexResource = new IndexResource(bookmarkDao);
-    final AddBookmarkResource addBookmarkResource = new AddBookmarkResource();
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
     environment.healthChecks().register("template", healthCheck);
     environment.jersey().register(new RuntimeExceptionMapper());
     // environment.jersey().register(resource);
-    environment.jersey().register(indexResource);
-    environment.jersey().register(addBookmarkResource);
+    environment.jersey().register(new IndexResource(bookmarkDao));
+    environment.jersey().register(new AddBookmarkResource());
     environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
     environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));
-    environment.jersey().register(new TestResource(bookmarkDao));
+    // environment.jersey().register(new TestResource(bookmarkDao));
   }
 
 }

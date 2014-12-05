@@ -79,33 +79,22 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     // bookmarkDao.insert(1, "http://patate.com");
 
     String description =
-        "Yes, even if you can't believe it, there are a lot fans of the 30-years-old vi editor (or its more recent, just-15-years-old, best clone & great improvement, vim).";
+        "Patate chaude";
 
     DateTime dateTime = new DateTime();
     Timestamp timeStamp = new Timestamp(dateTime.getMillis());
 
     Bookmark bookmark =
-        new Bookmark("Why, oh WHY, do those #?@! nutheads use vi",
-            "http://www.viemu.com/a-why-vi-vim.html", description, timeStamp);
+        new Bookmark("madame",
+            "http://trains.com", description, timeStamp);
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     List<Tag> bookmarksTagsList = new ArrayList<Tag>();
-    bookmarksTagsList.add(new Tag("vim", newBookmarkID));
-    bookmarksTagsList.add(new Tag("programming", newBookmarkID));
-    bookmarksTagsList.add(new Tag("editor", newBookmarkID));
-    bookmarksTagsList.add(new Tag("emacs", newBookmarkID));
-    bookmarksTagsList.add(new Tag("awesome", newBookmarkID));
+    bookmarksTagsList.add(new Tag("trains", newBookmarkID));
+    bookmarksTagsList.add(new Tag("fun", newBookmarkID));
 
     tagDao.insertTagsBean(bookmarksTagsList);
 
-
-    List<Bookmark> listOfBookmarks;
-
-    listOfBookmarks = bookmarkDao.getAllBookmarks();
-
-    for (Bookmark bookmark2 : listOfBookmarks) {
-      System.out.println(bookmark2.toString());
-    }
 
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 

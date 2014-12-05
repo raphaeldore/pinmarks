@@ -19,7 +19,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
   public Response toResponse(RuntimeException exception) {
     // Build default response
     Response defaultResponse =
-        Response.serverError().entity(new PublicFreemarkerView("error/500.ftl")).build();
+        Response.serverError().entity(new PublicFreemarkerView("errors/500.ftl")).build();
 
     // Check for any specific handling
     if (exception instanceof WebApplicationException) {

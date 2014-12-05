@@ -29,7 +29,7 @@ public interface BookmarkDAO {
   @SqlQuery("select title, url, description, dateAdded from bookmark WHERE bookmark_id = :it")
   Bookmark findById(@Bind int id);
   
-  @SqlQuery("select * from bookmark")
+  @SqlQuery("select title, url, description, dateAdded from bookmark")
   List<Bookmark> getAllBookmarks();
 
   void close();

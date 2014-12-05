@@ -16,7 +16,7 @@ import io.dropwizard.views.View;
 
 public class BookmarksView extends View {
   
-  private static final GenericType<List<Bookmark>> GT_LIST_BOOKMARK = new GenericType<List<Bookmark>>() {};
+  // private static final GenericType<List<Bookmark>> GT_LIST_BOOKMARK = new GenericType<List<Bookmark>>() {};
 
   
   List<Bookmark> bookmarks;
@@ -27,16 +27,16 @@ public class BookmarksView extends View {
   }
 
   protected BookmarksView(String templateName, Charset charset) {
-    super(templateName);
+    super(templateName, charset);
   }
 
   public List<Bookmark> getAllBookmarks() {
    // List<Bookmark> bookmarks2 = Client.resource("/bookmark").get(GT_LIST_BOOKMARK);
     
-    Map<String, Object> root = new HashMap<String, Object>();
-    root.put("bookmarks", this.bookmarks);
+    //Map<String, Object> root = new HashMap<String, Object>();
+    //root.put("bookmarks", this.bookmarks);
     
-    return this.bookmarks;
+    return bookmarks;
   }
 
 }

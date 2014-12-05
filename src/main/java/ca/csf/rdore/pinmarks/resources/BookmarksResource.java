@@ -1,11 +1,14 @@
 package ca.csf.rdore.pinmarks.resources;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.BookmarkView;
@@ -24,7 +27,8 @@ public class BookmarksResource {
     this.bookmarkDao = bookmarkDao;
     this.tagDao = tagDao;
   }
-  
+
+  // /bookmarks/id
   @Path("/{id}")
   @GET
   @Timed
@@ -32,10 +36,28 @@ public class BookmarksResource {
     return new BookmarkView(bookmarkDao.findById(id));
   }
 
+  @Path("/all")
   @GET
   @Timed
   public BookmarksView getAllBookmarks() {
-    return new BookmarksView(bookmarkDao.getAllBookmarks());
+    
+    List<Bookmark> listOfBookmarks;
+
+    listOfBookmarks = bookmarkDao.getAllBookmarks();
+    
+    if (listOfBookmarks == null) {
+      System.out.println("List Of Bookmarks is NULL");
+    } else {
+      System.out.println("List Of Bookmarks is NOT NOT NOT NOT NOT NULL");
+      int number = 1;
+      for (Bookmark bookmark : listOfBookmarks) {
+        System.out.println("Bookmark #" + number);
+        System.out.println(bookmark.toString());
+        number++;
+      }
+    }
+    
+    return new BookmarksView(listOfBookmarks);
   }
 
 }

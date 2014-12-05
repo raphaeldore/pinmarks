@@ -29,6 +29,9 @@ public interface BookmarkDAO {
   @SqlQuery("select title, url, description, dateAdded from bookmark WHERE bookmark_id = :it")
   Bookmark findById(@Bind int id);
   
+  @SqlQuery("select title, url, description, dateAdded from bookmark WHERE title LIKE :it")
+  List<Bookmark> findBookmarkByPattern(@Bind String pattern);
+  
   @SqlQuery("select title, url, description, dateAdded from bookmark")
   List<Bookmark> getAllBookmarks();
 

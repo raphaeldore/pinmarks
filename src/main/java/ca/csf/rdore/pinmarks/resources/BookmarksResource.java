@@ -25,7 +25,7 @@ public class BookmarksResource {
     this.tagDao = tagDao;
   }
   
-  @Path("{id}")
+  @Path("/{id}")
   @GET
   @Timed
   public BookmarkView getBookmark(@PathParam("id") int id) {

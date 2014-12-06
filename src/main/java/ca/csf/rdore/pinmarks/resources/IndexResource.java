@@ -37,6 +37,23 @@ public class IndexResource {
       return new IndexView(bookmarkDao.findBookmarksByPattern(searchBy , "%" + searchPattern + "%"));
     }
     
+/*    List<Bookmark> listOfBookmarks = new ArrayList<Bookmark>();
+    
+    System.out.println(searchBy);
+
+    if (searchBy == "title" || searchBy == "description") {
+      //listOfBookmarks = bookmarkDao.findBookmarksByPattern(searchBy, "%" + searchPattern + "%");
+      return new IndexView(bookmarkDao.findBookmarksByPattern(searchBy , "%" + searchPattern + "%"));
+    } else if (searchBy == "tag") {
+      List<String> tags = Lists.newArrayList(Splitter.on(" ").split(searchPattern));
+      List<Integer> bookmarkIDs = tagDao.findBookmarksByTag(tags);
+      for (Integer bookmarkID : bookmarkIDs) {
+        listOfBookmarks.add(bookmarkDao.findById(bookmarkID));
+      }
+    } else {
+      listOfBookmarks = bookmarkDao.getAllBookmarks();
+    }*/
+    
     // Just load the index with everything
     return new IndexView(bookmarkDao.getAllBookmarks());
   }

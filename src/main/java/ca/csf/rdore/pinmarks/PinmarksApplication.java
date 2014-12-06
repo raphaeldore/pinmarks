@@ -11,6 +11,7 @@ import io.dropwizard.views.ViewBundle;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,9 @@ import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Splitter;
+import com.google.common.collect.Lists;
 
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
@@ -78,15 +82,12 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
 
     // bookmarkDao.insert(1, "http://patate.com");
 
-    String description =
-        "Patate chaude";
+    String description = "Patate chaude";
 
     DateTime dateTime = new DateTime();
     Timestamp timeStamp = new Timestamp(dateTime.getMillis());
 
-    Bookmark bookmark =
-        new Bookmark("madame",
-            "http://trains.com", description, timeStamp);
+    Bookmark bookmark = new Bookmark("madame", "http://trains.com", description, timeStamp);
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     List<Tag> bookmarksTagsList = new ArrayList<Tag>();
@@ -95,7 +96,19 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
 
     tagDao.insertTagsBean(bookmarksTagsList);
 
-
+    String tagsToSearch = "\"vim, programming, editor, emacs, awesome\"";
+    // tagsToSearch.replaceAll(" ", ",");
+/*    List<Bookmark> listOfBookmarks = new ArrayList<Bookmark>();
+    List<String> tags = Lists.newArrayList(Splitter.on(" ").split(tagsToSearch));
+    List<Integer> bookmarkIDs = tagDao.findBookmarksByTag(tagsToSearch);
+    for (Integer bookmarkID : bookmarkIDs) {
+      listOfBookmarks.add(bookmarkDao.findById(bookmarkID));
+    }
+    
+    for (Bookmark bookmark2 : listOfBookmarks) {
+      System.out.println(bookmark2.toString());
+    }*/
+    
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
     environment.healthChecks().register("template", healthCheck);

@@ -96,26 +96,13 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
 
     tagDao.insertTagsBean(bookmarksTagsList);
 
-    String tagsToSearch = "\"vim, programming, editor, emacs, awesome\"";
-    // tagsToSearch.replaceAll(" ", ",");
-/*    List<Bookmark> listOfBookmarks = new ArrayList<Bookmark>();
-    List<String> tags = Lists.newArrayList(Splitter.on(" ").split(tagsToSearch));
-    List<Integer> bookmarkIDs = tagDao.findBookmarksByTag(tagsToSearch);
-    for (Integer bookmarkID : bookmarkIDs) {
-      listOfBookmarks.add(bookmarkDao.findById(bookmarkID));
-    }
-    
-    for (Bookmark bookmark2 : listOfBookmarks) {
-      System.out.println(bookmark2.toString());
-    }*/
-    
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
     environment.healthChecks().register("template", healthCheck);
     environment.jersey().register(new RuntimeExceptionMapper());
     // environment.jersey().register(resource);
     environment.jersey().register(new IndexResource(bookmarkDao, tagDao));
-    environment.jersey().register(new AddBookmarkResource());
+    environment.jersey().register(new AddBookmarkResource(bookmarkDao, tagDao));
     environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
     environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));
     // environment.jersey().register(new TestResource(bookmarkDao));

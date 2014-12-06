@@ -1,5 +1,6 @@
 package ca.csf.rdore.pinmarks.resources;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DefaultValue;
@@ -33,29 +34,27 @@ public class IndexResource {
   public IndexView index(@QueryParam("search") String searchPattern, @DefaultValue("title") @QueryParam("searchBy") String searchBy) {
     
     // User is searching, only display the search results
-    if (searchPattern != null) {
+    if (searchPattern != null && (searchBy.contentEquals("title") || searchBy.contentEquals("description"))) {
       return new IndexView(bookmarkDao.findBookmarksByPattern(searchBy , "%" + searchPattern + "%"));
-    }
-    
-/*    List<Bookmark> listOfBookmarks = new ArrayList<Bookmark>();
-    
-    System.out.println(searchBy);
-
-    if (searchBy == "title" || searchBy == "description") {
-      //listOfBookmarks = bookmarkDao.findBookmarksByPattern(searchBy, "%" + searchPattern + "%");
-      return new IndexView(bookmarkDao.findBookmarksByPattern(searchBy , "%" + searchPattern + "%"));
-    } else if (searchBy == "tag") {
-      List<String> tags = Lists.newArrayList(Splitter.on(" ").split(searchPattern));
-      List<Integer> bookmarkIDs = tagDao.findBookmarksByTag(tags);
-      for (Integer bookmarkID : bookmarkIDs) {
-        listOfBookmarks.add(bookmarkDao.findById(bookmarkID));
+    } else if (searchBy.contentEquals("tag")) {
+      List<Bookmark> listOfBookmarks = new ArrayList<Bookmark>();
+      List<Integer> bookmarkIDs = tagDao.findBookmarksByTagVersionTWO(getFirstWord(searchPattern));
+      for (Integer integer : bookmarkIDs) {
+        listOfBookmarks.add(bookmarkDao.findById(integer));
       }
-    } else {
-      listOfBookmarks = bookmarkDao.getAllBookmarks();
-    }*/
+      return new IndexView(listOfBookmarks);
+    }
     
     // Just load the index with everything
     return new IndexView(bookmarkDao.getAllBookmarks());
   }
 
+  private String getFirstWord(String text) {
+    if (text.indexOf(' ') > -1) { // Check if there is more than one word.
+      return text.substring(0, text.indexOf(' ')); // Extract first word.
+    } else {
+      return text; // Text is the first word itself.
+    }
+  }
+  
 }

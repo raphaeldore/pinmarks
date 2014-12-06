@@ -51,6 +51,10 @@
 			<groupId>antlr</groupId>
 			<artifactId>stringtemplate</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -113,6 +117,11 @@
 				<groupId>antlr</groupId>
 				<artifactId>stringtemplate</artifactId>
 				<version>2.3b6</version>
+			</dependency>
+			<dependency>
+				<groupId>com.sun.jersey.contribs</groupId>
+				<artifactId>jersey-multipart</artifactId>
+				<version>1.18.2</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

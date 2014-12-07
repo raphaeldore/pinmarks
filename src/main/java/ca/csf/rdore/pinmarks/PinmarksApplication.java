@@ -79,23 +79,6 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "pinmarks");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
     final TagDAO tagDao = jdbi.onDemand(TagDAO.class);
-
-    // bookmarkDao.insert(1, "http://patate.com");
-
-    String description = "Patate chaude";
-
-    DateTime dateTime = new DateTime();
-    Timestamp timeStamp = new Timestamp(dateTime.getMillis());
-
-    Bookmark bookmark = new Bookmark("madame", "http://trains.com", description, timeStamp);
-    int newBookmarkID = bookmarkDao.create(bookmark);
-
-    List<Tag> bookmarksTagsList = new ArrayList<Tag>();
-    bookmarksTagsList.add(new Tag("trains", newBookmarkID));
-    bookmarksTagsList.add(new Tag("fun", newBookmarkID));
-
-    tagDao.insertTagsBean(bookmarksTagsList);
-
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
     environment.healthChecks().register("template", healthCheck);

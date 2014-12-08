@@ -21,7 +21,7 @@
 
 	<changeSet id="2" author="rdore">
 		<createTable tableName="tag">
-			<column name="id" type="INT" autoIncrement="true">
+			<column name="tag_id" type="INT" autoIncrement="true">
 				<constraints nullable="false" primaryKey="true"></constraints>
 			</column>
 			<column name="bookmark_id" type="INT">

@@ -59,13 +59,14 @@ public interface BookmarkDAO {
     /* Here is the getAllBookmarks query in a more human readable format: 
 
   SELECT b.*,
-    GROUP_CONCAT(t.name ORDER BY t.name) AS tags
+    GROUP_CONCAT(t.name ORDER BY t.name) AS tags -- Temporary table
   FROM bookmark b
     LEFT JOIN bookmarks_tags bt
         ON b.id = bt.bookmark_id
     LEFT JOIN Tag t
         ON bt.tag_id = t.id
-  GROUP BY b.id;
+  GROUP BY b.id
+  ORDER BY dateAdded DESC;
 
 @formatter:on
 
@@ -73,7 +74,7 @@ public interface BookmarkDAO {
 
   /* @formatter:on */
   
-  @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt ON b.id = bt.bookmark_id LEFT JOIN Tag t ON bt.tag_id = t.id GROUP BY b.id;")
+  @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt ON b.id = bt.bookmark_id LEFT JOIN Tag t ON bt.tag_id = t.id GROUP BY b.id ORDER BY dateAdded DESC;")
   List<Bookmark> getAllBookmarksEvolved();
 
   void close();

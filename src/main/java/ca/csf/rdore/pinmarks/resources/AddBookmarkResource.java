@@ -36,7 +36,7 @@ public class AddBookmarkResource {
 
   BookmarkDAO bookmarkDao;
   TagDAO tagDao;
-  private final Hashids hashid = new Hashids("https://www.youtube.com/watch?v=dQw4w9WgXcQ", 10);
+  // private final Hashids hashid = new Hashids("https://www.youtube.com/watch?v=dQw4w9WgXcQ", 10);
 
   public AddBookmarkResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
     this.bookmarkDao = bookmarkDao;
@@ -58,13 +58,22 @@ public class AddBookmarkResource {
       // Response.status(400).entity(new PublicFreemarkerView("errors/400.ftl"));
     }
     
+    Hashids hashid = new Hashids(url + description + url, 10);
+
     DateTime dateTime = new DateTime();
-    Bookmark bookmark = new Bookmark(title, url, description, new Timestamp(dateTime.getMillis()), new ArrayList<String>(), hashid.encode(1337));
+    Bookmark bookmark =
+        new Bookmark(title, url, description, new Timestamp(dateTime.getMillis()),
+            new ArrayList<String>(), hashid.encode(1337));
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     if (tags != null && !tags.isEmpty()) {
-      List<Tag> bookmarkTagList = parseTags(tags, newBookmarkID);
-      tagDao.insertTagsBean(bookmarkTagList);
+      List<String> stringTagsList = Arrays.asList(tags.split("\\s*(=>|,|\\s)\\s*"));
+      List<Integer> tag_ids = new ArrayList<Integer>();
+
+      for (String tag_name : stringTagsList) {
+        tag_ids.add(bookmarkDao.createNewTag(new Tag(tag_name)));
+      }
+      bookmarkDao.batchInsertIDsIntoJunctionTable(newBookmarkID, tag_ids);
     }
 
     return Response.status(Status.CREATED).entity(new PublicFreemarkerView("addBookmark.ftl"))
@@ -81,10 +90,10 @@ public class AddBookmarkResource {
                                                                                    // whitespace.
     List<Tag> tagsList = new ArrayList<Tag>();
 
-    // TODO 
-/*    for (String stringTag : stringTagsList) {
-      tagsList.add(new Tag(stringTag, bookmarkID));
-    }*/
+    // TODO
+    /*
+     * for (String stringTag : stringTagsList) { tagsList.add(new Tag(stringTag, bookmarkID)); }
+     */
 
     return tagsList;
   }

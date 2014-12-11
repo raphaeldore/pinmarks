@@ -9,24 +9,10 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.hashids.Hashids;
-import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
-
-import ca.csf.rdore.pinmarks.core.Bookmark;
-import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.exceptions.RuntimeExceptionMapper;
@@ -35,7 +21,6 @@ import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
 import ca.csf.rdore.pinmarks.resources.BookmarkResource;
 import ca.csf.rdore.pinmarks.resources.BookmarksResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
-import ca.csf.rdore.pinmarks.resources.TestResource;
 
 // import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 

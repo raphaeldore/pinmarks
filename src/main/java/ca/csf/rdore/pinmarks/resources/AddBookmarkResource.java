@@ -1,13 +1,12 @@
 package ca.csf.rdore.pinmarks.resources;
 
+import io.dropwizard.views.View;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import io.dropwizard.views.View;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,10 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.joda.time.DateTime;
-
-import com.google.common.base.Splitter;
-import com.google.common.collect.Lists;
 
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
@@ -28,8 +25,6 @@ import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.AddBookmarkView;
 import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
-
-import org.hashids.*;
 
 @Path("/addBookmark")
 public class AddBookmarkResource {
@@ -57,17 +52,15 @@ public class AddBookmarkResource {
           .build();
       // Response.status(400).entity(new PublicFreemarkerView("errors/400.ftl"));
     }
-    
-    Hashids hashid = new Hashids(url + description + url, 10);
 
     DateTime dateTime = new DateTime();
     Bookmark bookmark =
         new Bookmark(title, url, description, new Timestamp(dateTime.getMillis()),
-            new ArrayList<String>(), hashid.encode(1337));
+            new ArrayList<String>(), RandomStringUtils.random(15, true, true));
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     if (tags != null && !tags.isEmpty()) {
-      List<String> stringTagsList = Arrays.asList(tags.split("\\s*(=>|,|\\s)\\s*"));
+      List<String> stringTagsList = Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"));
       List<Integer> tag_ids = new ArrayList<Integer>();
 
       for (String tag_name : stringTagsList) {

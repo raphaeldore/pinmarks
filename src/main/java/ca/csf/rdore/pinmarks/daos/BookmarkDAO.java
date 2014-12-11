@@ -44,7 +44,7 @@ public interface BookmarkDAO {
   @SqlQuery("select title, url, description, dateAdded from bookmark ORDER BY dateAdded DESC")
   List<Bookmark> getAllBookmarks();
   
-  @SqlBatch("INSERT INTO tag (name) values (:name)")
+  @SqlUpdate("INSERT INTO tag (name) values (:name)")
   @GetGeneratedKeys
   int createNewTag(@BindBean Tag tag);
   

@@ -69,7 +69,6 @@ public class AddBookmarkResource {
 
     return Response.status(Status.CREATED).entity(new PublicFreemarkerView("addBookmark.ftl"))
         .build();
-
   }
 
   private List<Tag> parseTags(String tags, int bookmarkID) {

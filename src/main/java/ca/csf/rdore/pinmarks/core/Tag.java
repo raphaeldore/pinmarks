@@ -14,7 +14,7 @@ public class Tag {
     setName(name);
   }
 
-  public String getNamet() {
+  public String getName() {
     return name;
   }
   

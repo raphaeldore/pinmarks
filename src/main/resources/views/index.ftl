@@ -42,14 +42,18 @@ title="Home">
 			<#list bookmarks as item>
 			<div class="bookmark">
 				<h4 class="bookmarkTitle">${item.title}</h4>
-				<a class="bookmarkURL" href="#">${item.url}</a><br />
+				<a class="bookmarkURL" href="${item.url}" target="_Blank">${item.url}</a><br />
 				<p class="bookmarkDescription">${item.description}</p>
+				
+				<#if (item.tags)??>
 				<ul class="bookmarkTags">
-					<li><a href="#">Tag 1</a></li>
-					<li><a href="#">Tag 2</a></li>
-					<li><a href="#">Tag 3</a></li>
-					<li><a href="#">Tag 4</a></li>
+					<#list item.tags as tag>
+					<#if tag != ''>
+						<li><a href="/?search=${tag}&searchBy=Tag">${tag}&nbsp;</a></li>
+					</#if>
+					</#list>
 				</ul>
+				</#if>
 				<span>Added ${item.dateAdded}</span>
 				<div class="editBookmark">
 					<a href="#">Edit</a>&nbsp; <a href="#"

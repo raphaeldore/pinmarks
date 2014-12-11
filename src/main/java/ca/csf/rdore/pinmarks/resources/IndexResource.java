@@ -46,7 +46,7 @@ public class IndexResource {
     }
     
     // Just load the index with everything
-    return new IndexView(bookmarkDao.getAllBookmarks());
+    return new IndexView(bookmarkDao.getAllBookmarksEvolved());
   }
 
   private String getFirstWord(String text) {

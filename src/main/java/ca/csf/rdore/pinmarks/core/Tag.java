@@ -8,21 +8,18 @@ import com.google.common.base.Objects;
 
 public class Tag {
 
-  @NotEmpty
-  private final String tagText;
-  private final int bookmarkID;
+  private String name;
 
-  public Tag(String tagText, int bookmarkID) {
-    this.tagText = tagText;
-    this.bookmarkID = bookmarkID;
+  public Tag(String name) {
+    setName(name);
   }
 
-  public String getTagText() {
-    return tagText;
+  public String getNamet() {
+    return name;
   }
-
-  public int getBookmarkID() {
-    return bookmarkID;
+  
+  public void setName(String name) {
+    this.name = name;
   }
 
   @Override
@@ -36,13 +33,13 @@ public class Tag {
 
     Tag tag = (Tag) o;
 
-    return Objects.equal(bookmarkID, tag.bookmarkID) && Objects.equal(tagText, tag.tagText);
+    return Objects.equal(name, tag.name);
 
   }
 
   @Override
   public int hashCode() {
-    return Objects.hashCode(bookmarkID, tagText);
+    return Objects.hashCode(name);
   }
 
   @Override

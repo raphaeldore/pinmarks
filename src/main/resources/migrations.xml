@@ -15,6 +15,7 @@
 				<constraints nullable="false" />
 			</column>
 			<column name="description" type="TEXT" />
+			<column name="slug" type="TEXT" />
 			<column name="dateAdded" type="TIMESTAMP" />
 		</createTable>
 	</changeSet>
@@ -52,21 +53,24 @@
 		</createTable>
 	</changeSet>
 
+	<!-- Add Bookmarks_Tags table foreign key references -->
 	<changeSet author="rdore" id="5">
-		<addForeignKeyConstraint baseColumnNames="id"
-			baseTableName="bookmark" constraintName="fk_bookmark"
-			referencedColumnNames="bookmark_id" referencedTableName="bookmarks_tags" />
-		<addForeignKeyConstraint baseColumnNames="id"
-			baseTableName="tag" constraintName="fk_tag" referencedColumnNames="tag_id"
-			referencedTableName="bookmarks_tags" />
+		<addForeignKeyConstraint baseTableName="bookmarks_tags"
+			baseColumnNames="bookmark_id" constraintName="fk_bookmark"
+			referencedTableName="bookmark" referencedColumnNames="id" />
+		<addForeignKeyConstraint baseTableName="bookmarks_tags"
+			baseColumnNames="tag_id" constraintName="fk_id" referencedTableName="Tag"
+			referencedColumnNames="id" />
 	</changeSet>
 
+	<!-- Add Tag_Stat table foreign key references -->
 	<changeSet author="rdore" id="6">
-		<addForeignKeyConstraint baseColumnNames="id"
-			baseTableName="tag" constraintName="fk_id" referencedColumnNames="bookmark_id"
-			referencedTableName="bookmarks_tags" />
+		<addForeignKeyConstraint baseColumnNames="tag_id"
+			baseTableName="tag_stat" constraintName="fk_tag"
+			referencedColumnNames="id" referencedTableName="Tag" />
 	</changeSet>
 
+	<!-- On ajoute une valeur par défaut -->
 	<changeSet author="rdore" id="7">
 		<addDefaultValue columnDataType="int" columnName="num_tags"
 			defaultValueNumeric="1" schemaName="public" tableName="tag_stat" />

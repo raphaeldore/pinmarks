@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hashids.Hashids;
 import org.joda.time.DateTime;
 import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
@@ -80,6 +81,35 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
     final TagDAO tagDao = jdbi.onDemand(TagDAO.class);
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
+    
+    Hashids hashid = new Hashids("https://www.youtube.com/watch?v=dQw4w9WgXcQ", 10);
+    
+    DateTime dateTime = new DateTime();
+    int bookmark_id = bookmarkDao.create(new Bookmark("Vim is awesome", "http://vimisawesome.com", " vim vim vim vim vim vim vim vim vim vim", new Timestamp(dateTime.getMillis()), null, hashid.encode(1337)));
+
+    String tags = "editor,programming,vim,wars";
+    
+    List<String> stringTagsList = Arrays.asList(tags.split("\\s*(=>|,|\\s)\\s*"));
+    List<Integer> tag_ids = new ArrayList<Integer>();
+    
+    
+    for (String tag : stringTagsList) {
+      tag_ids.add(bookmarkDao.createNewTag(new Tag(tag)));
+    }
+    
+    // WHY IS THERE AN OUT OF MEMORY ERROR??!?!?!
+    
+    // int tag_id = bookmarkDao.createNewTag("vim");
+    
+    
+   bookmarkDao.batchInsertIDsIntoJunctionTable(bookmark_id, tag_ids);
+    
+    List<Bookmark> bookmarksList = new ArrayList<Bookmark>();
+    bookmarksList = bookmarkDao.getAllBookmarksEvolved();
+    
+    for (Bookmark bookmark : bookmarksList) {
+      System.out.println(bookmark.toString());
+    }
 
     environment.healthChecks().register("template", healthCheck);
     environment.jersey().register(new RuntimeExceptionMapper());

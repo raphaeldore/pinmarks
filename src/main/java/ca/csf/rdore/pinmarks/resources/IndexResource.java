@@ -31,30 +31,49 @@ public class IndexResource {
   @GET
   @Produces(MediaType.TEXT_HTML)
   @Timed
-  public IndexView index(@QueryParam("search") String searchPattern, @DefaultValue("title") @QueryParam("searchBy") String searchBy) {
-    
+  public IndexView index(@QueryParam("search") String searchPattern,
+      @DefaultValue("title") @QueryParam("searchBy") String searchBy) {
+
     // User is searching, only display the search results
-    if (searchPattern != null && (searchBy.contentEquals("title") || searchBy.contentEquals("description"))) {
-      return new IndexView(bookmarkDao.findBookmarksByPattern(searchBy , "%" + searchPattern + "%"));
+    if (searchPattern != null
+        && (searchBy.contentEquals("title") || searchBy.contentEquals("description"))) {
+      List<Bookmark> listOfBookmarks = bookmarkDao.getAllBookmarksEvolved();
+      List<Bookmark> listOfFilteredBookmarks = new ArrayList<Bookmark>();
+      if (searchBy.contentEquals("title")) {
+        for (Bookmark bookmark : listOfBookmarks) {
+          if (bookmark.getTitle().toLowerCase().contains(searchPattern.toLowerCase())) {
+            listOfFilteredBookmarks.add(bookmark);
+          }
+        }
+      } else {
+        for (Bookmark bookmark : listOfBookmarks) {
+          if (bookmark.getDescription().toLowerCase().contains(searchPattern.toLowerCase())) {
+            listOfFilteredBookmarks.add(bookmark);
+          }
+        }
+
+        return new IndexView(listOfFilteredBookmarks);
+      }
+
     } else if (searchBy.contentEquals("tag")) {
-      List<Bookmark> listOfBookmarks = bookmarkDao.searchByTags(searchPattern);
-/*      List<Integer> bookmarkIDs = tagDao.findBookmarksByTagVersionTWO(getFirstWord(searchPattern));
-      for (Integer integer : bookmarkIDs) {
-        listOfBookmarks.add(bookmarkDao.findById(integer));
-      }*/
-      return new IndexView(listOfBookmarks);
+
+      List<Bookmark> listOfBookmarks = bookmarkDao.getAllBookmarksEvolved();
+      List<Bookmark> listOfFilteredBookmarks = new ArrayList<Bookmark>();
+
+      for (Bookmark bookmark : listOfBookmarks) {
+        List<String> tags = bookmark.getTags();
+        for (String tag_text : tags) {
+          if (searchPattern.toLowerCase().contains(tag_text.toLowerCase())) {
+            listOfFilteredBookmarks.add(bookmark);
+          }
+        }
+      }
+
+      return new IndexView(listOfFilteredBookmarks);
     }
-    
+
     // Just load the index with everything
     return new IndexView(bookmarkDao.getAllBookmarksEvolved());
   }
 
-  private String getFirstWord(String text) {
-    if (text.indexOf(' ') > -1) { // Check if there is more than one word.
-      return text.substring(0, text.indexOf(' ')); // Extract first word.
-    } else {
-      return text; // Text is the first word itself.
-    }
-  }
-  
 }

@@ -49,7 +49,7 @@ title="Home">
 				<ul class="bookmarkTags">
 					<#list item.tags as tag>
 					<#if tag != ''>
-						<li><a href="/?search=${tag}&searchBy=Tag">${tag}&nbsp;</a></li>
+						<li><a href="/?search=${tag}&searchBy=tag">${tag}&nbsp;</a></li>
 					</#if>
 					</#list>
 				</ul>

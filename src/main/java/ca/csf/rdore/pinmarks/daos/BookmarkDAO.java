@@ -58,15 +58,15 @@ public interface BookmarkDAO {
 
     /* Here is the getAllBookmarks query in a more human readable format: 
 
-  SELECT b.*,
-    GROUP_CONCAT(t.name ORDER BY t.name) AS tags -- Temporary table
-  FROM bookmark b
-    LEFT JOIN bookmarks_tags bt
-        ON b.id = bt.bookmark_id
-    LEFT JOIN Tag t
-        ON bt.tag_id = t.id
-  GROUP BY b.id
-  ORDER BY dateAdded DESC;
+SELECT b.*,
+       Group_concat(t.name ORDER BY t.name) AS tags -- Temporary table
+FROM   bookmark b
+       LEFT JOIN bookmarks_tags bt
+              ON b.id = bt.bookmark_id
+       LEFT JOIN tag t
+              ON bt.tag_id = t.id
+GROUP  BY b.id
+ORDER  BY dateadded DESC;  
 
    */
   
@@ -78,24 +78,47 @@ public interface BookmarkDAO {
     In Human readable format:
     
 SELECT b.*,
-    GROUP_CONCAT(t.name ORDER BY t.name) AS tags
-FROM bookmark b
-    LEFT JOIN bookmarks_tags bt1
-        ON b.id = bt1.bookmark_id
-    LEFT JOIN Tag t
-    ON bt1.tag_id = t.id
-WHERE EXISTS(
-    SELECT *
-    FROM bookmarks_tags bt2
-        INNER JOIN tag on bt2.tag_id = tag.ID
-    WHERE b.ID = bt2.bookmark_id
-        AND tag.name like '%prog%'
-)
-GROUP BY b.id;
+       Group_concat(t.name ORDER BY t.name) AS tags
+FROM   bookmark b
+       LEFT JOIN bookmarks_tags bt1
+              ON b.id = bt1.bookmark_id
+       LEFT JOIN tag t
+              ON bt1.tag_id = t.id
+WHERE  EXISTS(SELECT *
+              FROM   bookmarks_tags bt2
+                     INNER JOIN tag
+                             ON bt2.tag_id = tag.id
+              WHERE  b.id = bt2.bookmark_id
+                     AND tag.name LIKE Lower(:tag_name))
+GROUP  BY b.id;  
    
   */
   
-  @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt1 ON b.id = bt1.bookmark_id LEFT JOIN Tag t ON bt1.tag_id = t.id WHERE EXISTS(SELECT * FROM bookmarks_tags bt2 INNER JOIN tag on bt2.tag_id = tag.ID WHERE b.ID = bt2.bookmark_id AND tag.name like '%'+ :tag_name + '%') GROUP BY b.id;")
+  @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt1 ON b.id = bt1.bookmark_id LEFT JOIN Tag t ON bt1.tag_id = t.id WHERE EXISTS(SELECT * FROM bookmarks_tags bt2 INNER JOIN tag on bt2.tag_id = tag.ID WHERE b.ID = bt2.bookmark_id AND tag.name like LOWER(:tag_name)) GROUP BY b.id;")
+  List<Bookmark> searchByTags_old(@Bind("tag_name") String tag_name);
+  
+  /*
+
+SELECT b.*,
+       Group_concat(t.name ORDER BY t.name) AS tags
+FROM   bookmark b
+       LEFT JOIN bookmarks_tags bt1
+              ON b.id = bt1.bookmark_id
+       LEFT JOIN tag t
+              ON bt1.tag_id = t.id
+WHERE  EXISTS(SELECT *
+              FROM   bookmarks_tags bt2
+                     INNER JOIN tag
+                             ON bt2.tag_id = tag.id
+              WHERE  b.id = bt2.bookmark_id
+                     AND :tag_name LIKE Concat('%', tag.name, '%'))
+GROUP  BY b.id;  
+  
+  */
+  
+  /* User must use the full tag name for this to work. Searching for "prog" doesn't return tags that have "programming",
+    but searching for "programming eclipse firefox" returns a list of bookmarks that have any of those tags. */
+  @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt1 ON b.id = bt1.bookmark_id LEFT JOIN Tag t ON bt1.tag_id = t.id WHERE EXISTS(SELECT * FROM bookmarks_tags bt2 INNER JOIN tag on bt2.tag_id = tag.ID WHERE b.ID = bt2.bookmark_id AND :tag_name LIKE CONCAT('%',tag.name,'%')) GROUP BY b.id;")
   List<Bookmark> searchByTags(@Bind("tag_name") String tag_name);
 
   void close();

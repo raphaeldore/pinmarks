@@ -24,6 +24,8 @@ import ca.csf.rdore.pinmarks.jdbi.BookmarkMapper;
 @RegisterMapper(BookmarkMapper.class)
 public interface BookmarkDAO {
 
+  /* @formatter:off */
+  
   @SqlUpdate("INSERT INTO bookmark (title, url, description, dateAdded) values (:title, :url, :description, :dateAdded)")
   void insert(@Bind("title") String title, @Bind("url") String url,
       @Bind("description") String description, @Bind("dateAdded") Timestamp dateAdded);
@@ -54,8 +56,6 @@ public interface BookmarkDAO {
   @SqlBatch("INSERT INTO bookmarks_tags (bookmark_id, tag_id) values (:bookmark_id, :tag_id)")
   void insertIDIntoJunctionTable(@Bind("bookmark_id") int bookmark_id, @Bind("tag_id") int tag_id);
 
-/* @formatter:off */
-
     /* Here is the getAllBookmarks query in a more human readable format: 
 
   SELECT b.*,
@@ -68,14 +68,38 @@ public interface BookmarkDAO {
   GROUP BY b.id
   ORDER BY dateAdded DESC;
 
-@formatter:on
-
    */
-
-  /* @formatter:on */
   
   @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt ON b.id = bt.bookmark_id LEFT JOIN Tag t ON bt.tag_id = t.id GROUP BY b.id ORDER BY dateAdded DESC;")
   List<Bookmark> getAllBookmarksEvolved();
+  
+  /*
+  
+    In Human readable format:
+    
+SELECT b.*,
+    GROUP_CONCAT(t.name ORDER BY t.name) AS tags
+FROM bookmark b
+    LEFT JOIN bookmarks_tags bt1
+        ON b.id = bt1.bookmark_id
+    LEFT JOIN Tag t
+    ON bt1.tag_id = t.id
+WHERE EXISTS(
+    SELECT *
+    FROM bookmarks_tags bt2
+        INNER JOIN tag on bt2.tag_id = tag.ID
+    WHERE b.ID = bt2.bookmark_id
+        AND tag.name like '%prog%'
+)
+GROUP BY b.id;
+   
+  */
+  
+  @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt1 ON b.id = bt1.bookmark_id LEFT JOIN Tag t ON bt1.tag_id = t.id WHERE EXISTS(SELECT * FROM bookmarks_tags bt2 INNER JOIN tag on bt2.tag_id = tag.ID WHERE b.ID = bt2.bookmark_id AND tag.name like '%'+ :tag_name + '%') GROUP BY b.id;")
+  List<Bookmark> searchByTags(@Bind("tag_name") String tag_name);
 
   void close();
+  
+  /* @formatter:on */
+
 }

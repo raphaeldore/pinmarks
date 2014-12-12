@@ -37,11 +37,11 @@ public class IndexResource {
     if (searchPattern != null && (searchBy.contentEquals("title") || searchBy.contentEquals("description"))) {
       return new IndexView(bookmarkDao.findBookmarksByPattern(searchBy , "%" + searchPattern + "%"));
     } else if (searchBy.contentEquals("tag")) {
-      List<Bookmark> listOfBookmarks = new ArrayList<Bookmark>();
-      List<Integer> bookmarkIDs = tagDao.findBookmarksByTagVersionTWO(getFirstWord(searchPattern));
+      List<Bookmark> listOfBookmarks = bookmarkDao.searchByTags(searchPattern);
+/*      List<Integer> bookmarkIDs = tagDao.findBookmarksByTagVersionTWO(getFirstWord(searchPattern));
       for (Integer integer : bookmarkIDs) {
         listOfBookmarks.add(bookmarkDao.findById(integer));
-      }
+      }*/
       return new IndexView(listOfBookmarks);
     }
     

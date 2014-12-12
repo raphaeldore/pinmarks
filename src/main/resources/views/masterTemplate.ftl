@@ -13,7 +13,7 @@
 <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 </head>
 
-<body>
+<body onload="insertSearchTermParamInTextBox();">
 	<div class='navbar fixed'>
 		<div class='container'>
 			<h4 class='pull-left'>Pinmarks</h4>
@@ -26,9 +26,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="container">
-		<#nested/>
-	</div>
+	<div class="container"><#nested/></div>
 	<div class="container">
 		<footer>
 			&copy; 2014, <a href="http://www.nothingrelevant.org/">Raphaël
@@ -106,6 +104,30 @@
 				console.log("Bookmark deleted");
 			}
 		}
+	</script>
+	
+	<script>
+		function insertSearchTermParamInTextBox()
+		{
+		var input = $('#searchBox');
+		var text = getUrlParameter("search");
+		input.val(text);
+		}
+	</script>
+	<script>
+function getUrlParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++) 
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) 
+        {
+            return sParameterName[1];
+        }
+    }
+}    
 	</script>
 </body>
 </html>

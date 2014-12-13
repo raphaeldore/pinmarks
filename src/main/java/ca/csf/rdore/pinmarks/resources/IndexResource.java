@@ -3,8 +3,10 @@ package ca.csf.rdore.pinmarks.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -85,25 +87,41 @@ public class IndexResource {
     return new IndexView(bookmarkDao.getAllBookmarksEvolved());
   }
 
-  @Path("delete/{bookmarkSlug}")
+  @Path("delete")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   @DELETE
-  public Response deleteBookmark(@PathParam("bookmarkSlug") String bookmarkSlug, @Context HttpHeaders hh) {
-    try {
-      bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
-      return Response.status(Status.OK).build();
-    } catch (Exception e) {
-      return Response.status(Status.NOT_FOUND).build();
+  public Response deleteBookmark(@FormParam("bookmarkSlug") String bookmarkSlug,
+      @Context HttpHeaders hh) {
+
+    Response resp;
+
+    if (bookmarkSlug == null) {
+      return Response.status(Status.BAD_REQUEST).build();
     }
+
+    Bookmark bookmark = bookmarkDao.getBookmarkBySlug(bookmarkSlug);
+
+    if (bookmark == null) {
+      resp = Response.status(Status.NO_CONTENT).build();
+    } else {
+      resp = Response.status(Status.ACCEPTED).build();
+      try {
+        bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
+        resp = Response.status(Status.OK).build();
+      } catch (Exception e) {
+        throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+      }
+    }
+
+    return resp;
   }
 
-  @Path("delete/{bookmarkSlug}")
+
+  @Path("delete")
   @GET
-  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() {
-    //return new WebApplicationException(Status.FORBIDDEN);
-   throw new WebApplicationException(Status.FORBIDDEN);
-//    return Response.status(Status.FORBIDDEN).entity(new PublicFreemarkerView("/errors/403.ftl"))
-//        .build();
-
+  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() { // return new
+    throw new WebApplicationException(Status.FORBIDDEN);
   }
+
 
 }

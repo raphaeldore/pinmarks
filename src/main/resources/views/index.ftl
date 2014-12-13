@@ -38,9 +38,10 @@ title="Home">
 	<div class="row">
 		<div class="span eight" id="bookmarkSearchResults">
 			<div id="lightbox">Testing out the lightbox</div>
-			<#if bookmarks?has_content> <a href="#" id="opener">Click me</a>
+			<a href="#" id="opener">Click me</a>
+			<#if bookmarks?has_content>
 			<#list bookmarks as item>
-			<div class="bookmark">
+			<div class="bookmark" id="${item.slug}">
 				<h4 class="bookmarkTitle">${item.title}</h4>
 				<a class="bookmarkURL" href="${item.url}" target="_Blank">${item.url}</a><br />
 				<p class="bookmarkDescription">${item.description}</p>
@@ -54,7 +55,7 @@ title="Home">
 				</#if> <span>Added ${item.dateAdded}</span>
 				<div class="editBookmark">
 					<a href="#">Edit</a>&nbsp; <a href="#"
-						onclick="return deleteBookmark('${item.slug}')">Delete</a>
+						onclick="return deleteBookmarkBySlug('${item.slug}')">Delete</a>
 				</div>
 			</div>
 			</#list> <#else>

@@ -61,9 +61,12 @@ ORDER  BY dateadded DESC;
 
    */
   
+ 
   @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt ON b.id = bt.bookmark_id LEFT JOIN Tag t ON bt.tag_id = t.id GROUP BY b.id ORDER BY dateAdded DESC;")
   List<Bookmark> getAllBookmarksEvolved();
   
+  @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt ON b.id = bt.bookmark_id LEFT JOIN Tag t ON bt.tag_id = t.id WHERE slug = :bookmark_slug GROUP BY b.id;")
+  Bookmark getBookmarkBySlug(@Bind("bookmark_slug") String slug);
   /*
   
     In Human readable format:

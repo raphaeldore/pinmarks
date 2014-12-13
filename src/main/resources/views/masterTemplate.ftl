@@ -74,7 +74,7 @@
 		}
 	</script>
 	<script>
-		var opener = document.getElreturnementById("opener");
+		var opener = document.getElementById("opener");
 
 		opener.onclick = function() {
 
@@ -98,13 +98,25 @@
 			return false;
 		}
 	</script>
-	<script>	
-		function deleteBookmark(bookmarkSlug) {
+	<script>
+		function deleteBookmarkBySlug(bookmarkSlug) {
 			if (window.confirm("Delete this bookmark?")) {
-				xmlhttp=new XMLHttpRequest();
-				xmlhttp.open("DELETE","/delete/" + bookmarkSlug,true);
-				xmlhttp.send();
-				console.log("Bookmark with Slug " + bookmarkSlug + " deleted");
+				var formData = "bookmarkSlug=" + bookmarkSlug;
+				$.ajax({
+					url : "/delete",
+					type : "DELETE",
+					data : formData,
+					success : function(data, textStatus, jqXHR) {
+						console.log("Server response: " + textStatus);
+						console.log("Removing div...");
+						$('#' + bookmarkSlug).hide('slow', function(){ $('#' + bookmarkSlug).remove(); });
+						// $('#' + bookmarkSlug).fadeOut(300, function(){ $(this).remove();});
+						console.log("..done");
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						console.log(errorThrown);
+					}
+				});
 			}
 		}
 	</script>

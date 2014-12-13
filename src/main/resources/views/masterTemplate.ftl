@@ -74,7 +74,7 @@
 		}
 	</script>
 	<script>
-		var opener = document.getElementById("opener");
+		var opener = document.getElreturnementById("opener");
 
 		opener.onclick = function() {
 
@@ -99,44 +99,11 @@
 		}
 	</script>
 	<script>
-		function deleteBookmark(bookmarkID) {
+		function deleteBookmark(bookmarkSlug) {
 			if (window.confirm("Delete this bookmark?")) {
-				console.log("Bookmark deleted");
+				console.log("Bookmark with Slug " + bookmarkSlug + " deleted");
 			}
 		}
-	</script>
-	
-	<script>
-		function insertSearchTermParamInTextBox()
-		{
-		var input = $('#searchBox');
-		var text = getUrlParameter("search");
-		input.val(text);
-		}
-	</script>
-	<script>
-function getUrlParameter(sParam)
-{
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++) 
-    {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam) 
-        {
-            return sParameterName[1];
-        }
-    }
-}    
-	</script>
-	
-	<script>
-$('#textboxId').keydown(function (event) {
-    var keypressed = event.keyCode || event.which;
-    if (keypressed == 13) {
-        $(this).closest('form').submit();
-    }
-});
 	</script>
 </body>
 </html>

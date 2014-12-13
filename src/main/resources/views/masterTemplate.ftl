@@ -98,14 +98,13 @@
 			return false;
 		}
 	</script>
-	<script>
+	<script>	
 		function deleteBookmark(bookmarkSlug) {
 			if (window.confirm("Delete this bookmark?")) {
 				xmlhttp=new XMLHttpRequest();
-				xmlhttp.open("POST","/delete/" + bookmarkSlug,true);
+				xmlhttp.open("DELETE","/delete/" + bookmarkSlug,true);
 				xmlhttp.send();
 				console.log("Bookmark with Slug " + bookmarkSlug + " deleted");
-
 			}
 		}
 	</script>

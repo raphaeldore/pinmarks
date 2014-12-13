@@ -50,6 +50,10 @@
 			<groupId>com.sun.jersey.contribs</groupId>
 			<artifactId>jersey-multipart</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-validator</groupId>
+			<artifactId>commons-validator</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -112,6 +116,11 @@
 				<groupId>com.sun.jersey.contribs</groupId>
 				<artifactId>jersey-multipart</artifactId>
 				<version>1.18.2</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-validator</groupId>
+				<artifactId>commons-validator</artifactId>
+				<version>1.4.0</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

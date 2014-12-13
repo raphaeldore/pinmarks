@@ -3,6 +3,7 @@ package ca.csf.rdore.pinmarks.resources;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,6 +11,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -82,8 +86,8 @@ public class IndexResource {
   }
 
   @Path("delete/{bookmarkSlug}")
-  @POST
-  public Response deleteBookmark(@PathParam("bookmarkSlug") String bookmarkSlug) {
+  @DELETE
+  public Response deleteBookmark(@PathParam("bookmarkSlug") String bookmarkSlug, @Context HttpHeaders hh) {
     try {
       bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
       return Response.status(Status.OK).build();
@@ -94,9 +98,11 @@ public class IndexResource {
 
   @Path("delete/{bookmarkSlug}")
   @GET
-  public Response forbidGetRequestsToDeleteBookmarkPage() {
-    return Response.status(Status.FORBIDDEN).entity(new PublicFreemarkerView("/errors/403.ftl"))
-        .build();
+  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() {
+    //return new WebApplicationException(Status.FORBIDDEN);
+   throw new WebApplicationException(Status.FORBIDDEN);
+//    return Response.status(Status.FORBIDDEN).entity(new PublicFreemarkerView("/errors/403.ftl"))
+//        .build();
 
   }
 

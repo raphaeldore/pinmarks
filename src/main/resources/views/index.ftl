@@ -38,8 +38,8 @@ title="Home">
 	<div class="row">
 		<div class="span eight" id="bookmarkSearchResults">
 			<div id="lightbox">Testing out the lightbox</div>
-			<#if bookmarks?has_content>
-			<a href="#" id="opener">Click me</a> <#list bookmarks as item>
+			<#if bookmarks?has_content> <a href="#" id="opener">Click me</a>
+			<#list bookmarks as item>
 			<div class="bookmark">
 				<h4 class="bookmarkTitle">${item.title}</h4>
 				<a class="bookmarkURL" href="${item.url}" target="_Blank">${item.url}</a><br />
@@ -57,50 +57,45 @@ title="Home">
 						onclick="return deleteBookmark('${item.slug}')">Delete</a>
 				</div>
 			</div>
-			</#list>
-			<#else>
-				<h4>Nothing to show here...</h4>
+			</#list> <#else>
+			<h4>Nothing to show here...</h4>
 			</#if>
-			
-			
+
+
 
 		</div>
 		<div class="span four">Tags....</div>
 	</div>
 </div>
 
-	<script>
-function getUrlParameter(sParam)
-{
-    var sPageURL = window.location.search.substring(1);
-    var sURLVariables = sPageURL.split('&');
-    for (var i = 0; i < sURLVariables.length; i++) 
-    {
-        var sParameterName = sURLVariables[i].split('=');
-        if (sParameterName[0] == sParam) 
-        {
-            return sParameterName[1];
-        }
-    }
-}    
-	</script>
-	
-	<script>
-		function insertSearchTermParamInTextBox()
-		{
+<script>
+	function getUrlParameter(sParam) {
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++) {
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) {
+				return sParameterName[1];
+			}
+		}
+	}
+</script>
+
+<script>
+	function insertSearchTermParamInTextBox() {
 		var input = $('#searchBox');
 		var text = getUrlParameter("search");
 		input.val(text);
-		}
-	</script>
+	}
+</script>
 
 <script>
-$('#textboxId').keydown(function (event) {
-    var keypressed = event.keyCode || event.which;
-    if (keypressed == 13) {
-        $(this).closest('form').submit();
-    }
-});
+	$('#textboxId').keydown(function(event) {
+		var keypressed = event.keyCode || event.which;
+		if (keypressed == 13) {
+			$(this).closest('form').submit();
+		}
+	});
 </script>
 
 </@layout.layout>

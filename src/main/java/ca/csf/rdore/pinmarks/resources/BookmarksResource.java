@@ -27,15 +27,17 @@ public class BookmarksResource {
   
   @GET
   public BookmarksView getBookmarks() {
-    return new BookmarksView(bookmarkDao.getAllBookmarks());
+    return new BookmarksView(bookmarkDao.getAllBookmarksEvolved());
   }
 
-  // /bookmarks/id
-  @Path("/{id}")
+  // /bookmarks/slug
+  @Path("/{slug}")
   @GET
   @Timed
-  public BookmarkView getBookmark(@PathParam("id") int id) {
-    return new BookmarkView(bookmarkDao.findById(id));
+  public BookmarkView getBookmark(@PathParam("slug") String slug) {
+    return null;
+    // TODO
+    //return new BookmarkView(bookmarkDao.getBySlug(slug));
   }
 
 }

@@ -29,11 +29,13 @@ public class BookmarkResource {
     this.tagDao = tagDao;
   }
   
-  @Path("{id}")
+  @Path("{slug}")
   @GET
   @Timed
-  public BookmarkView getBookmark(@PathParam("id") int id) {
-    return new BookmarkView(bookmarkDao.findById(id));
+  public BookmarkView getBookmark(@PathParam("slug") String slug) {
+    return null;
+    // TODO:
+    //return new BookmarkView(bookmarkDao.getBookmarkBySlug("slug"));
   }
 
 

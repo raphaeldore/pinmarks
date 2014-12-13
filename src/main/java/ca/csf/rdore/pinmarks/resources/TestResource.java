@@ -20,7 +20,7 @@ public class TestResource {
   
   @GET
   public BookmarksView getBookmarks() {
-    return new BookmarksView(bookmarkDao.getAllBookmarks());
+    return new BookmarksView(bookmarkDao.getAllBookmarksEvolved());
   }
   
   

@@ -16,6 +16,8 @@ import org.skife.jdbi.v2.sqlobject.customizers.Define;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator;
 
+import com.google.common.base.Optional;
+
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.jdbi.BookmarkMapper;
@@ -35,17 +37,6 @@ public interface BookmarkDAO {
   // We need to use the bookmarkID key for the tag table
   int create(@BindBean Bookmark bookmark);
 
-  @SqlQuery("select title, url, description, dateAdded from bookmark WHERE bookmark_id = :it")
-  Bookmark findById(@Bind int id);
-
-  // This is not very safe...
-  @SqlQuery("select title, url, description, dateAdded from bookmark WHERE <columnName> LIKE :pattern")
-  List<Bookmark> findBookmarksByPattern(@Define("columnName") String columnName,
-      @Bind("pattern") String pattern);
-
-  @SqlQuery("select title, url, description, dateAdded from bookmark ORDER BY dateAdded DESC")
-  List<Bookmark> getAllBookmarks();
-  
   @SqlUpdate("INSERT INTO tag (name) values (:name)")
   @GetGeneratedKeys
   int createNewTag(@BindBean Tag tag);
@@ -98,6 +89,8 @@ GROUP  BY b.id;
   List<Bookmark> searchByTags_old(@Bind("tag_name") String tag_name);
   
   /*
+   
+   In Human readable format:
 
 SELECT b.*,
        Group_concat(t.name ORDER BY t.name) AS tags
@@ -122,7 +115,7 @@ GROUP  BY b.id;
   List<Bookmark> searchByTags(@Bind("tag_name") String tag_name);
   
   @SqlUpdate("DELETE FROM bookmark WHERE slug = :it;")
-  void deleteBookmark(@Bind String slug);
+  void deleteBookmarkBySlug(@Bind String slug);
 
   void close();
   

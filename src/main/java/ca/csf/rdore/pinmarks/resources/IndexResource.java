@@ -12,11 +12,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.IndexView;
+import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -79,14 +81,22 @@ public class IndexResource {
     return new IndexView(bookmarkDao.getAllBookmarksEvolved());
   }
 
+  @Path("delete/{bookmarkSlug}")
   @POST
-  @Path("/delete/{bookmarkSlug}")
   public Response deleteBookmark(@PathParam("bookmarkSlug") String bookmarkSlug) {
-    if (bookmarkSlug != null && !bookmarkSlug.isEmpty()) {
-      bookmarkDao.deleteBookmark(bookmarkSlug);
+    try {
+      bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
+      return Response.status(Status.OK).build();
+    } catch (Exception e) {
+      return Response.status(Status.NOT_FOUND).build();
     }
-    return null;
-    
   }
-  
+
+  @Path("delete/{bookmarkSlug}")
+  @GET
+  public Response forbidGetRequestsToDeleteBookmarkPage() {
+    return Response.status(Status.FORBIDDEN).entity(new PublicFreemarkerView("/errors/403.ftl"))
+        .build();
+  }
+
 }

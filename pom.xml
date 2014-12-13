@@ -43,11 +43,6 @@
 			<artifactId>h2</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
-			<version>1.4.1</version>
-		</dependency>
-		<dependency>
 			<groupId>antlr</groupId>
 			<artifactId>stringtemplate</artifactId>
 		</dependency>
@@ -107,11 +102,6 @@
 				<groupId>com.h2database</groupId>
 				<artifactId>h2</artifactId>
 				<version>1.4.182</version>
-			</dependency>
-			<dependency>
-				<groupId>org.elasticsearch</groupId>
-				<artifactId>elasticsearch</artifactId>
-				<version>${es.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>antlr</groupId>

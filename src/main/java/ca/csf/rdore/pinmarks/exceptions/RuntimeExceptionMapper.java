@@ -51,6 +51,11 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
       return Response.status(Response.Status.NOT_FOUND)
           .entity(new PublicFreemarkerView("errors/404.ftl")).build();
     }
+    
+    if (webAppException.getResponse().getStatus() == 403) {
+      return Response.status(Response.Status.FORBIDDEN)
+          .entity(new PublicFreemarkerView("errors/403.ftl")).build();
+    }
 
     // Debug logging
 

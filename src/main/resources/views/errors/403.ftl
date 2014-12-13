@@ -1,4 +1,4 @@
-<#import "../masterTemplate.ftl" as layout> <@layout.layout title="404 Not Found">
+<#import "../masterTemplate.ftl" as layout> <@layout.layout title="403 Forbidden">
 
 <h1>ERROR 403</h1>
 <center>

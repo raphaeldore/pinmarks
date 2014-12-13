@@ -97,6 +97,7 @@ public class IndexResource {
   public Response forbidGetRequestsToDeleteBookmarkPage() {
     return Response.status(Status.FORBIDDEN).entity(new PublicFreemarkerView("/errors/403.ftl"))
         .build();
+
   }
 
 }

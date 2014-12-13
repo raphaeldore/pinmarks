@@ -57,10 +57,10 @@
 	<changeSet author="rdore" id="5">
 		<addForeignKeyConstraint baseTableName="bookmarks_tags"
 			baseColumnNames="bookmark_id" constraintName="fk_bookmark"
-			referencedTableName="bookmark" referencedColumnNames="id" />
+			referencedTableName="bookmark" referencedColumnNames="id" onDelete="CASCADE" />
 		<addForeignKeyConstraint baseTableName="bookmarks_tags"
 			baseColumnNames="tag_id" constraintName="fk_id" referencedTableName="Tag"
-			referencedColumnNames="id" />
+			referencedColumnNames="id" onDelete="CASCADE" />
 	</changeSet>
 
 	<!-- Add Tag_Stat table foreign key references -->

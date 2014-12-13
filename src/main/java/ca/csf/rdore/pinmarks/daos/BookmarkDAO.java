@@ -120,6 +120,9 @@ GROUP  BY b.id;
     but searching for "programming eclipse firefox" returns a list of bookmarks that have any of those tags. */
   @SqlQuery("SELECT b.*, GROUP_CONCAT(t.name ORDER BY t.name) AS tags FROM bookmark b LEFT JOIN bookmarks_tags bt1 ON b.id = bt1.bookmark_id LEFT JOIN Tag t ON bt1.tag_id = t.id WHERE EXISTS(SELECT * FROM bookmarks_tags bt2 INNER JOIN tag on bt2.tag_id = tag.ID WHERE b.ID = bt2.bookmark_id AND :tag_name LIKE CONCAT('%',tag.name,'%')) GROUP BY b.id;")
   List<Bookmark> searchByTags(@Bind("tag_name") String tag_name);
+  
+  @SqlUpdate("DELETE FROM bookmark WHERE slug = :it;")
+  void deleteBookmark(@Bind String slug);
 
   void close();
   

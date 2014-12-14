@@ -22,8 +22,8 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 <body onload="init();">
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script
-		src="http://cdn.jsdelivr.net/jquery.validation/1.13.1/jquery.validate.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+	<script	src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/additional-methods.min.js"></script>
 	<script language="javascript">
 		var min_height = 500;
 
@@ -68,15 +68,6 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 	</script>
 	<script>
 	
-	$.validator.addMethod(
-	        "regex",
-	        function(value, element, regexp) {
-	            var re = new RegExp(regexp);
-	            return this.optional(element) || re.test(value);
-	        },
-	        "Please check your input."
-	);
-		
 	$().ready(function() {
 		
 		// validate signup form on keyup and submit
@@ -85,7 +76,8 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 					{
 						rules : {
 							url : {
-								regex: /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
+								required: true,
+								url: true
 							},
 							title : {
 								required : true,

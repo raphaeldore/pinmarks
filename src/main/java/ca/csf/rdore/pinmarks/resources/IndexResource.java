@@ -20,6 +20,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.lang3.StringUtils;
+
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
@@ -72,9 +74,13 @@ public class IndexResource {
       List<Bookmark> listOfFilteredBookmarks = new ArrayList<Bookmark>();
 
       for (Bookmark bookmark : listOfBookmarks) {
+        System.out.println(bookmark.toString());
         List<String> tags = bookmark.getTags();
+        System.out.println(tags.toString());
         for (String tag_text : tags) {
-          if (searchPattern.toLowerCase().contains(tag_text.toLowerCase())) {
+          int fuzzy = StringUtils.getLevenshteinDistance(searchPattern.toLowerCase(), tag_text.toLowerCase(), 3);
+          if(fuzzy <= 3 && fuzzy >= 0)
+          {
             listOfFilteredBookmarks.add(bookmark);
           }
         }

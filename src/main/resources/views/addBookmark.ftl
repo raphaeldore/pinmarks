@@ -6,19 +6,34 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Pinmarks - Add a Bookmark</title>
 <link rel="stylesheet" href="/css/bijou.css">
+<style>
+	#addBookmark {
+		padding: 20px;
+	}
+	#addBookmark label {
+		width: 250px;
+	}
+	#addBookmark label.error, #addBookmark input.submit {
+		margin-left: 26px;
+		color: red;
+	}
+</style>
 </head>
 <body onload="init();">
+	<script
+		src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script
+		src="http://cdn.jsdelivr.net/jquery.validation/1.13.1/jquery.validate.min.js"></script>
 	<script language="javascript">
-		var min_height = 550;
+		var min_height = 500;
 
 		function init() {
 			if (window.outerHeight < min_height) {
-				window.resizeTo(700, min_height);
+				window.resizeTo(600, min_height);
 			}
 			var url = document.getElementById("url");
 			var focus_me = url.value.length > 0 ? 'tags' : 'url';
 			document.getElementById(focus_me).focus();
-			get_suggested_tags();
 		}
 
 		function checkEnter(e) { //e is event object passed from function invocation
@@ -30,11 +45,6 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 			}
 		}
 
-		function submit() {
-			document.forms[0].submit();
-			window.close();
-		}
-
 		function cancel() {
 			window.close();
 		}
@@ -44,55 +54,91 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 			window.close();
 		}
 		function reloadParent() {
-			if (document.getElementById('url').value != null && document.getElementById('title').value != null ) {
+			if (document.getElementById('url').value != null
+					&& document.getElementById('title').value != null) {
 				window.opener.location.reload(false);
 			}
 
 		}
+
+		function closeWindowAndRefreshParent() {
+			opener.location.reload();
+			window.close();
+		}
 	</script>
-	<form method="post" action="/addBookmark/">
-		<input type="hidden" name="next" value="" />
-		<table>
-			<tr>
-				<td>URL</td>
-				<td><input type="text" autocorrect="off" id="url" name="url"
-					size="70" value="http://placeholder.com" required /></td>
-			</tr>
-			<tr>
-				<td>title</td>
-				<td><input type="text" autocomplete="off" autocapitalize="off"
-					name="title" size="70" value="Pinmarks" required /></td>
-			</tr>
-			<tr>
-				<td>description</td>
-				<td><textarea name="description" autocomplete="off"
-						autocapitalize="off" cols=60 rows=4></textarea></td>
-			</tr>
-			<tr>
-				<td style="vertical-align: top">tags</td>
-				<td><input name="tags" autocomplete="off" autocorrect="off"
-					autocapitalize="off" id="tags" size="70" value="" /></td>
-			</tr>
+	<script>
+	
+	$.validator.addMethod(
+	        "regex",
+	        function(value, element, regexp) {
+	            var re = new RegExp(regexp);
+	            return this.optional(element) || re.test(value);
+	        },
+	        "Please check your input."
+	);
+		
+	$().ready(function() {
+		
+		// validate signup form on keyup and submit
+		$("#addBookmark")
+			.validate(
+					{
+						rules : {
+							url : {
+								regex: /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/
+							},
+							title : {
+								required : true,
+								minlength : 5
+							}
+						},
+						messages : {
+							url : "You must enter a valid url",
+							title : {
+								required : "Please enter a title",
+								minlength : "Your title must consist of at least 5 characters"
+							}
+						},
+						submitHandler : 
+							function(form) {
+								$.ajax({
+									type : "POST",
+									url : "/addBookmark",
+									data : $('#addBookmark').serialize(),
+									success : function(data) {
+										//alert("hello");
+										closeWindowAndRefreshParent();
+									}
+								});
 
-			<tr id="suggestion_row" style="height: 30px; visibility: hidden;">
-				<td>suggest</td>
-				<td id='suggested'></td>
-			</tr>
+							}
+					});
+	});
+	</script>
 
-			<tr>
-				<td></td>
-				<td><input type="checkbox" name="private" id="private" checked />
-					<label style="display: inline" for="private">private</label> <input
-					type="checkbox" name="toread" id="toread" /> <label
-					style="display: inline" for="toread">read later</label> <br></td>
-			</tr>
+	<form id="addBookmark">
+			<p>
+				<label for="cname">URL (Required)</label> <br />
+				<input type="text" autocorrect="off" id="url" name="url" size="70" value="" required /> <br />
+			</p>
+			<p>
+				<label for="title">Title (Required, minimum length: 5)</label><br /> 
+				<input type="text"	autocomplete="off" autocapitalize="off" name="title" size="70"	value="" minlength="5" required /> <br />
+			</p>
+			<p>
+				<label for="description">Description (optional)</label> <br />
+				<textarea name="description" autocomplete="off" autocapitalize="off" cols=56 rows=4 /></textarea>
+			</p>
+			<p>
+				<label for="tags">Tags (optional)</label> <br />
+				<input name="tags" autocomplete="off" autocorrect="off" autocapitalize="off" id="tags" size="70" value="" />
+			</p>
+			<br />
+			<p>
+				<input type="submit" value="Add Bookmark" class="button success small" />
+			</p>
+	</form>
 
-			<tr>
-				<td></td>
-				<td><br /> <input type="submit" value="add bookmark"
-					class="button success small" onclick="reloadParent();" /></td>
-			</tr>
-		</table>
 </body>
 
 </html>

@@ -7,16 +7,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.joda.time.DateTime;
 
 import ca.csf.rdore.pinmarks.core.Bookmark;
@@ -31,6 +34,7 @@ public class AddBookmarkResource {
 
   BookmarkDAO bookmarkDao;
   TagDAO tagDao;
+
   // private final Hashids hashid = new Hashids("https://www.youtube.com/watch?v=dQw4w9WgXcQ", 10);
 
   public AddBookmarkResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
@@ -45,12 +49,19 @@ public class AddBookmarkResource {
   }
 
   @POST
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response addBookmark(@FormParam("title") String title, @FormParam("url") String url,
       @FormParam("description") String description, @FormParam("tags") String tags) {
     if (title == null || title.isEmpty() || url == null || url.isEmpty()) {
       return Response.status(Status.BAD_REQUEST).entity(new PublicFreemarkerView("errors/400.ftl"))
           .build();
       // Response.status(400).entity(new PublicFreemarkerView("errors/400.ftl"));
+    }
+
+    UrlValidator urlValidator = new UrlValidator();
+
+    if (!urlValidator.isValid(url)) {
+      throw new WebApplicationException(Status.BAD_REQUEST);
     }
 
     DateTime dateTime = new DateTime();
@@ -68,9 +79,10 @@ public class AddBookmarkResource {
       }
       bookmarkDao.batchInsertIDsIntoJunctionTable(newBookmarkID, tag_ids);
     }
-
-    return Response.status(Status.CREATED).entity(new PublicFreemarkerView("addBookmark.ftl"))
-        .build();
+    
+    //return Response.status(Status.CREATED).entity(new PublicFreemarkerView("addBookmark.ftl")).build();
+    return Response.status(Status.CREATED).build();
+    
   }
 
   private List<Tag> parseTags(String tags, int bookmarkID) {

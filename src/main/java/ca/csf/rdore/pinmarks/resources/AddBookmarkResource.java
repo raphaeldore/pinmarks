@@ -62,7 +62,6 @@ public class AddBookmarkResource {
     UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_2_SLASHES);
 
     if (!urlValidator.isValid(url)) {
-      System.out.println("WTFWTFWTF");
       //throw new WebApplicationException(Status.BAD_REQUEST);
       return Response.status(new BadURLException(Status.BAD_REQUEST)).build();
     }

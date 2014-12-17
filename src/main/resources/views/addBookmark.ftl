@@ -113,7 +113,7 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 
 	<form id="addBookmark">
 			<p>
-				<label for="cname">URL (Required)</label> <br />
+				<label for="url">URL (Required)</label> <br />
 				<input type="text" autocorrect="off" id="url" name="url" size="70" value="" required /> <br />
 			</p>
 			<p>

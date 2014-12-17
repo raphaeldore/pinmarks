@@ -17,7 +17,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.joda.time.DateTime;
 
@@ -26,6 +25,7 @@ import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.exceptions.BadURLException;
+import ca.csf.rdore.pinmarks.util.MiscUtils;
 import ca.csf.rdore.pinmarks.views.AddBookmarkView;
 import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
 
@@ -67,7 +67,7 @@ public class AddBookmarkResource {
     DateTime dateTime = new DateTime();
     Bookmark bookmark =
         new Bookmark(title, url, description, new Timestamp(dateTime.getMillis()),
-            new ArrayList<String>(), RandomStringUtils.random(15, true, true));
+            new ArrayList<String>(), MiscUtils.GenerateRandomSlug());
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     if (tags != null && !tags.isEmpty()) {

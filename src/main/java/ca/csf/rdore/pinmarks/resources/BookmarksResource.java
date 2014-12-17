@@ -9,31 +9,35 @@ import javax.ws.rs.core.MediaType;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.BookmarkView;
+import ca.csf.rdore.pinmarks.views.BookmarksView;
 
 import com.codahale.metrics.annotation.Timed;
 
-@Path("/potato")
+@Path("/bookmarks")
 @Produces(MediaType.TEXT_HTML)
 // @Consumes("*/*")
-public class BookmarkResource {
-
+public class BookmarksResource {
   BookmarkDAO bookmarkDao;
   TagDAO tagDao;
 
-  public BookmarkResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
+  public BookmarksResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
     this.bookmarkDao = bookmarkDao;
     this.tagDao = tagDao;
   }
   
-  @Path("{slug}")
+  @GET
+  public BookmarksView getBookmarks() {
+    return new BookmarksView(bookmarkDao.getAllBookmarksEvolved());
+  }
+
+  // /bookmarks/slug
+  @Path("/{slug}")
   @GET
   @Timed
   public BookmarkView getBookmark(@PathParam("slug") String slug) {
     return null;
-    // TODO:
-    //return new BookmarkView(bookmarkDao.getBookmarkBySlug("slug"));
+    // TODO
+    //return new BookmarkView(bookmarkDao.getBySlug(slug));
   }
-
-
 
 }

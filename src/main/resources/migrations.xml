@@ -1,20 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="1" author="rdore">
-        <createTable tableName="bookmark">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="url" type="text">
-                <constraints nullable="false"/>
-            </column>
-            <column name="tags" type="text"/>
-        </createTable>
-    </changeSet>
+	<changeSet author="rdore" id="1">
+		<createTable tableName="bookmark">
+			<column name="id" type="SERIAL" autoIncrement="true">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="title" type="VARCHAR(255)"></column>
+			<column name="url" type="TEXT">
+				<constraints nullable="false" />
+			</column>
+			<column name="description" type="TEXT" />
+			<column name="slug" type="TEXT" />
+			<column name="dateAdded" type="TIMESTAMP" />
+		</createTable>
+	</changeSet>
+
+	<changeSet author="rdore" id="2">
+		<createTable tableName="tag">
+			<column name="id" type="SERIAL" autoIncrement="true">
+				<constraints primaryKey="true"></constraints>
+			</column>
+			<column name="name" type="VARCHAR(255)">
+				<constraints nullable="false"></constraints>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="rdore" id="3">
+		<createTable tableName="bookmarks_tags">
+			<column name="bookmark_id" type="INT" autoIncrement="true">
+				<constraints nullable="false"></constraints>
+			</column>
+			<column name="tag_id" type="INT">
+				<constraints nullable="false"></constraints>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="rdore" id="4">
+		<createTable tableName="tag_stat">
+			<column name="tag_id" type="INT" autoIncrement="true">
+				<constraints nullable="false" primaryKey="true"></constraints>
+			</column>
+			<column name="num_tags" type="INT">
+				<constraints nullable="false"></constraints>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<!-- Add Bookmarks_Tags table foreign key references -->
+	<changeSet author="rdore" id="5">
+		<addForeignKeyConstraint baseTableName="bookmarks_tags"
+			baseColumnNames="bookmark_id" constraintName="fk_bookmark"
+			referencedTableName="bookmark" referencedColumnNames="id" onDelete="CASCADE" />
+		<addForeignKeyConstraint baseTableName="bookmarks_tags"
+			baseColumnNames="tag_id" constraintName="fk_id" referencedTableName="Tag"
+			referencedColumnNames="id" onDelete="CASCADE" />
+	</changeSet>
+
+	<!-- Add Tag_Stat table foreign key references -->
+	<changeSet author="rdore" id="6">
+		<addForeignKeyConstraint baseColumnNames="tag_id"
+			baseTableName="tag_stat" constraintName="fk_tag"
+			referencedColumnNames="id" referencedTableName="Tag" />
+	</changeSet>
+
+	<!-- On ajoute une valeur par défaut -->
+	<changeSet author="rdore" id="7">
+		<addDefaultValue columnDataType="int" columnName="num_tags"
+			defaultValueNumeric="1" schemaName="public" tableName="tag_stat" />
+	</changeSet>
+
 </databaseChangeLog>

@@ -19,7 +19,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
   public Response toResponse(RuntimeException exception) {
     // Build default response
     Response defaultResponse =
-        Response.serverError().entity(new PublicFreemarkerView("error/500.ftl")).build();
+        Response.serverError().entity(new PublicFreemarkerView("errors/500.ftl")).build();
 
     // Check for any specific handling
     if (exception instanceof WebApplicationException) {
@@ -41,9 +41,20 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
       return Response.status(Response.Status.UNAUTHORIZED)
           .entity(new PublicFreemarkerView("errors/401.ftl")).build();
     }
+    
+    if (webAppException.getResponse().getStatus() == 400) {
+      return Response.status(Response.Status.BAD_REQUEST)
+          .entity(new PublicFreemarkerView("errors/400.ftl")).build();
+    }
+    
     if (webAppException.getResponse().getStatus() == 404) {
       return Response.status(Response.Status.NOT_FOUND)
           .entity(new PublicFreemarkerView("errors/404.ftl")).build();
+    }
+    
+    if (webAppException.getResponse().getStatus() == 403) {
+      return Response.status(Response.Status.FORBIDDEN)
+          .entity(new PublicFreemarkerView("errors/403.ftl")).build();
     }
 
     // Debug logging

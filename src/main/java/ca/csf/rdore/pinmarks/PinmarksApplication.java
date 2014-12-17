@@ -14,12 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
+import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.exceptions.RuntimeExceptionMapper;
 import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 import ca.csf.rdore.pinmarks.resources.AddBookmarkResource;
 import ca.csf.rdore.pinmarks.resources.BookmarkResource;
+import ca.csf.rdore.pinmarks.resources.BookmarksResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
-import ca.csf.rdore.pinmarks.resources.PinmarksResource;
 
 // import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 
@@ -51,6 +52,7 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     bootstrap.addBundle(new AssetsBundle("/assets/bootstrap/fonts", "/fonts", null,
         "bootstrapFonts"));
     bootstrap.addBundle(new AssetsBundle("/assets/css/", "/css", null, "css"));
+    bootstrap.addBundle(new AssetsBundle("/assets/img/", "/img", null, "img"));
     bootstrap.addBundle(new ViewBundle());
 
   }
@@ -60,23 +62,19 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     LOGGER.info("The Application Has Started :) ");
 
     final DBIFactory factory = new DBIFactory();
-    final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "pinmarks");
+    final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "h2");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
-    environment.jersey().register(new BookmarkResource(bookmarkDao));
-    
-    // bookmarkDao.insert(1, "http://patate.com");
-
-    // final PinmarksResource resource =
-    // new PinmarksResource(configuration.getTemplate(), configuration.getDefaultName());
-    final IndexResource indexResource = new IndexResource();
-    final AddBookmarkResource addBookmarkResource = new AddBookmarkResource();
+    final TagDAO tagDao = jdbi.onDemand(TagDAO.class);
     final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
     environment.healthChecks().register("template", healthCheck);
     environment.jersey().register(new RuntimeExceptionMapper());
     // environment.jersey().register(resource);
-    environment.jersey().register(indexResource);
-    environment.jersey().register(addBookmarkResource);
+    environment.jersey().register(new IndexResource(bookmarkDao, tagDao));
+    environment.jersey().register(new AddBookmarkResource(bookmarkDao, tagDao));
+    environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
+    environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));
+    // environment.jersey().register(new TestResource(bookmarkDao));
   }
 
 }

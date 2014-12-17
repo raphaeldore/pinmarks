@@ -11,7 +11,7 @@ database:
   password: supersecretpassword
 
   # the JDBC URL
-  url: jdbc:h2:./target/pinmarksdb
+  url: jdbc:h2:./target/pinmarksdb;MODE=MySQL
 
   # any properties specific to your JDBC driver:
   properties:

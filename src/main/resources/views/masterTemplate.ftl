@@ -9,24 +9,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="/css/bijou.css">
 <link rel="stylesheet" href="/css/site.css">
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 </head>
 
-<body>
+<body onload="insertSearchTermParamInTextBox();">
 	<div class='navbar fixed'>
 		<div class='container'>
 			<h4 class='pull-left'>Pinmarks</h4>
 			<ul class='pull-right'>
 				<li><a href='/'>Home</a></li>
-				<li><a href='#'>Bookmarks</a></li>
+				<li><a href='/bookmarks'>Bookmarks</a></li>
 				<li><a href="/addBookmark" target="AddBookmark"
 					onclick="PopupCenter('/addBookmark','AddBookmark','700','350'); return false;"
 					title="Add a bookmark to your collection">Add Bookmark</a></li>
 			</ul>
 		</div>
 	</div>
-	<div class="container">
-		<#nested/>
-	</div>
+	<div class="container"><#nested/></div>
 	<div class="container">
 		<footer>
 			&copy; 2014, <a href="http://www.nothingrelevant.org/">Raphaël
@@ -99,9 +99,24 @@
 		}
 	</script>
 	<script>
-		function deleteBookmark(bookmarkID) {
+		function deleteBookmarkBySlug(bookmarkSlug) {
 			if (window.confirm("Delete this bookmark?")) {
-				console.log("Bookmark deleted");
+				var formData = "bookmarkSlug=" + bookmarkSlug;
+				$.ajax({
+					url : "/delete",
+					type : "DELETE",
+					data : formData,
+					success : function(data, textStatus, jqXHR) {
+						console.log("Server response: " + textStatus);
+						console.log("Removing div...");
+						$('#' + bookmarkSlug).hide('slow', function(){ $('#' + bookmarkSlug).remove(); });
+						// $('#' + bookmarkSlug).fadeOut(300, function(){ $(this).remove();});
+						console.log("..done");
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						console.log(errorThrown);
+					}
+				});
 			}
 		}
 	</script>

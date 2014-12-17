@@ -35,8 +35,6 @@ public class AddBookmarkResource {
   BookmarkDAO bookmarkDao;
   TagDAO tagDao;
 
-  // private final Hashids hashid = new Hashids("https://www.youtube.com/watch?v=dQw4w9WgXcQ", 10);
-
   public AddBookmarkResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
     this.bookmarkDao = bookmarkDao;
     this.tagDao = tagDao;
@@ -58,11 +56,11 @@ public class AddBookmarkResource {
       // Response.status(400).entity(new PublicFreemarkerView("errors/400.ftl"));
     }
 
-    String[] schemes = {"http","https"};
+    String[] schemes = {"http", "https"};
     UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_2_SLASHES);
 
     if (!urlValidator.isValid(url)) {
-      //throw new WebApplicationException(Status.BAD_REQUEST);
+      // throw new WebApplicationException(Status.BAD_REQUEST);
       return Response.status(new BadURLException(Status.BAD_REQUEST)).build();
     }
 
@@ -73,6 +71,9 @@ public class AddBookmarkResource {
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     if (tags != null && !tags.isEmpty()) {
+
+      // Separates by whitespace, by whitespace or comma (,) or arrow (=>), by zero or more
+      // whitespace:
       List<String> stringTagsList = Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"));
       List<Integer> tag_ids = new ArrayList<Integer>();
 
@@ -81,28 +82,11 @@ public class AddBookmarkResource {
       }
       bookmarkDao.batchInsertIDsIntoJunctionTable(newBookmarkID, tag_ids);
     }
-    
-    //return Response.status(Status.CREATED).entity(new PublicFreemarkerView("addBookmark.ftl")).build();
+
+    // return Response.status(Status.CREATED).entity(new
+    // PublicFreemarkerView("addBookmark.ftl")).build();
     return Response.status(Status.CREATED).build();
-    
-  }
 
-  private List<Tag> parseTags(String tags, int bookmarkID) {
-    List<String> stringTagsList = Arrays.asList(tags.split("\\s*(=>|,|\\s)\\s*")); // Separates by
-                                                                                   // whitespace, by
-                                                                                   // whitespace or
-                                                                                   // comma (,) or
-                                                                                   // arrow (=>), by
-                                                                                   // zero or more
-                                                                                   // whitespace.
-    List<Tag> tagsList = new ArrayList<Tag>();
-
-    // TODO
-    /*
-     * for (String stringTag : stringTagsList) { tagsList.add(new Tag(stringTag, bookmarkID)); }
-     */
-
-    return tagsList;
   }
 
 }

@@ -40,6 +40,7 @@ title="Home">
 			<div id="lightbox">Testing out the lightbox</div>
 			<a href="#" id="opener">Click me</a>
 			<#if bookmarks?has_content>
+			<#-- If the bookmark list is not null or empty, then iterate thought it-->
 			<#list bookmarks as item>
 			<div class="bookmark" id="${item.slug}">
 				<h4 class="bookmarkTitle">${item.title}</h4>
@@ -48,9 +49,12 @@ title="Home">
 
 				<#if (item.tags)??>
 				<ul class="bookmarkTags">
-					<#list item.tags as tag> <#if tag != ''>
+				<#-- Iterate through the bookmark tags -->
+					<#list item.tags as tag> 
+					<#if tag != ''>
 					<li><a href="/?search=${tag}&searchBy=tag">${tag}&nbsp;</a></li>
-					</#if> </#list>
+					</#if> 
+					</#list>
 				</ul>
 				</#if> <span>Added ${item.dateAdded}</span>
 				<div class="editBookmark">
@@ -91,6 +95,7 @@ title="Home">
 </script>
 
 <script>
+	// User can submit the search box by pressing enter
 	$('#textboxId').keydown(function(event) {
 		var keypressed = event.keyCode || event.which;
 		if (keypressed == 13) {

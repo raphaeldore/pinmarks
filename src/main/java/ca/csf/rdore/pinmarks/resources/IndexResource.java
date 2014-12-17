@@ -46,7 +46,8 @@ public class IndexResource {
 
     // User is searching, only display the search results
     if (searchPattern != null
-        && (searchBy.contentEquals("title") || searchBy.contentEquals("description"))) {
+        && (searchBy.toLowerCase().contentEquals("title") || searchBy.toLowerCase().contentEquals(
+            "description"))) {
       List<Bookmark> listOfBookmarks = bookmarkDao.getAllBookmarksEvolved();
       List<Bookmark> listOfFilteredBookmarks = new ArrayList<Bookmark>();
       if (searchBy.contentEquals("title")) {
@@ -65,19 +66,22 @@ public class IndexResource {
         return new IndexView(listOfFilteredBookmarks);
       }
 
-    } else if (searchBy.contentEquals("tag")) {
+    } else if (searchBy.toLowerCase().contentEquals("tag")) {
 
+      // Here we get all the bookmarks, and filter them by tag. If the user misspells a tag, the
+      // search might still be successful, since we use the Levenshtein algorithm ("Fuzzy Search").
+      // More info: http://www.let.rug.nl/kleiweg/lev/
       List<Bookmark> listOfBookmarks = bookmarkDao.getAllBookmarksEvolved();
       List<Bookmark> listOfFilteredBookmarks = new ArrayList<Bookmark>();
 
       for (Bookmark bookmark : listOfBookmarks) {
-        System.out.println(bookmark.toString());
         List<String> tags = bookmark.getTags();
-        System.out.println(tags.toString());
         for (String tag_text : tags) {
-          int fuzzy = StringUtils.getLevenshteinDistance(searchPattern.toLowerCase(), tag_text.toLowerCase(), 3);
-          if(fuzzy <= 3 && fuzzy >= 0)
-          {
+          int searchedTagLevenshteinDistance =
+              StringUtils.getLevenshteinDistance(searchPattern.toLowerCase(),
+                  tag_text.toLowerCase(), 3);
+          if (searchedTagLevenshteinDistance >= 0 && searchedTagLevenshteinDistance <= 3) {
+            // All bookmarks that satisfy the conditions are added to the listOfFilteredBookmarks 
             listOfFilteredBookmarks.add(bookmark);
           }
         }
@@ -86,10 +90,11 @@ public class IndexResource {
       return new IndexView(listOfFilteredBookmarks);
     }
 
-    // Just load the index with everything
+    // If the user isn't searching, just show all the bookmarks
     return new IndexView(bookmarkDao.getAllBookmarksEvolved());
   }
 
+  // root + /delete
   @Path("delete")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   @DELETE

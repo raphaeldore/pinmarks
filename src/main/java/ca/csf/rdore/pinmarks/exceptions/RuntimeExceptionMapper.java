@@ -43,7 +43,7 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
     }
     
     if (webAppException.getResponse().getStatus() == 400) {
-      return Response.status(Response.Status.UNAUTHORIZED)
+      return Response.status(Response.Status.BAD_REQUEST)
           .entity(new PublicFreemarkerView("errors/400.ftl")).build();
     }
     

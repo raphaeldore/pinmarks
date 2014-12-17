@@ -100,7 +100,10 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 									success : function(data) {
 										//alert("hello");
 										closeWindowAndRefreshParent();
-									}
+									},
+								    error: function(XMLHttpRequest, textStatus, errorThrown) { 
+								        alert("Error: " + errorThrown); 
+								    }   
 								});
 
 							}

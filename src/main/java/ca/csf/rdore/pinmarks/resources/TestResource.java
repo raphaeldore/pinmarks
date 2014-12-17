@@ -7,7 +7,6 @@ import javax.ws.rs.core.MediaType;
 
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.views.BookmarksView;
-import ca.csf.rdore.pinmarks.views.BookmarksView;
 
 @Path("/test")
 @Produces(MediaType.TEXT_HTML)

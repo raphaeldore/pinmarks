@@ -1,20 +1,16 @@
 package ca.csf.rdore.pinmarks.resources;
 
-import java.util.List;
-
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.codahale.metrics.annotation.Timed;
-
-import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.views.BookmarkView;
+
+import com.codahale.metrics.annotation.Timed;
 
 @Path("/potato")
 @Produces(MediaType.TEXT_HTML)

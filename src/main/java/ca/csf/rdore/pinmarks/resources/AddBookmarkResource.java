@@ -13,7 +13,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -26,6 +25,7 @@ import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
 import ca.csf.rdore.pinmarks.daos.TagDAO;
+import ca.csf.rdore.pinmarks.exceptions.BadURLException;
 import ca.csf.rdore.pinmarks.views.AddBookmarkView;
 import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
 
@@ -58,10 +58,13 @@ public class AddBookmarkResource {
       // Response.status(400).entity(new PublicFreemarkerView("errors/400.ftl"));
     }
 
-    UrlValidator urlValidator = new UrlValidator();
+    String[] schemes = {"http","https"};
+    UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_2_SLASHES);
 
     if (!urlValidator.isValid(url)) {
-      throw new WebApplicationException(Status.BAD_REQUEST);
+      System.out.println("WTFWTFWTF");
+      //throw new WebApplicationException(Status.BAD_REQUEST);
+      return Response.status(new BadURLException(Status.BAD_REQUEST)).build();
     }
 
     DateTime dateTime = new DateTime();

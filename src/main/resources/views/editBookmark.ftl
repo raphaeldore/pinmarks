@@ -1,28 +1,29 @@
 <#-- @ftlvariable name=""
-type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
+type="ca.csf.rdore.pinmarks.views.EditBookmarkView" -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>Pinmarks - Add a Bookmark</title>
+<title>Pinmarks - Edit Bookmark</title>
 <link rel="stylesheet" href="/css/bijou.css">
 <style>
-	#addBookmark {
+	#editBookmark {
 		padding: 20px;
 	}
-	#addBookmark label {
+	#editBookmark label {
 		width: 250px;
 	}
-	#addBookmark label.error, #addBookmark input.submit {
+	#editBookmark label.error, #editBookmark input.submit {
 		margin-left: 26px;
 		color: red;
 	}
 </style>
 </head>
 <body onload="init();">
-	<script src="/js/jquery-1.9.1.min.js"></script>
-	<script src="http://cdn.jsdelivr.net/jquery.validation/1.13.1/jquery.validate.min.js"></script>
-	<script	src="/js/jquery.validate.additional-methods.min.js"></script>
+	<script
+		src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js"></script>
+	<script	src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/additional-methods.min.js"></script>
 	<script language="javascript">
 		var min_height = 500;
 
@@ -70,7 +71,7 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 	$().ready(function() {
 		
 		// validate signup form on keyup and submit
-		$("#addBookmark")
+		$("#editBookmark")
 			.validate(
 					{
 						rules : {
@@ -94,10 +95,9 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 							function(form) {
 								$.ajax({
 									type : "POST",
-									url : "/bookmark/add",
-									data : $('#addBookmark').serialize(),
+									url : "<#if bookmark??>/bookmark/${bookmark.slug}/edit</#if>",
+									data : $('#editBookmark').serialize(),
 									success : function(data) {
-										//alert("hello");
 										closeWindowAndRefreshParent();
 									},
 								    error: function(XMLHttpRequest, textStatus, errorThrown) { 
@@ -106,33 +106,33 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 								});
 
 							}
-					});
+					});		
 	});
 	</script>
-	
-	<form id="addBookmark">
+
+	<form id="editBookmark">
 			<p>
 				<label for="url">URL (Required)</label> <br />
-				<input type="text" autocorrect="off" id="url" name="url" size="70" value="" required /> <br />
+				<input type="text" autocorrect="off" id="url" name="url" size="70" value="<#if bookmark.url??>${bookmark.url}</#if>" required /> <br />
 			</p>
 			<p>
 				<label for="title">Title (Required, minimum length: 5)</label><br /> 
-				<input type="text"	autocomplete="off" autocapitalize="off" name="title" size="70"	value="" minlength="5" required /> <br />
+				<input type="text"	autocomplete="off" autocapitalize="off" name="title" size="70"	value="<#if bookmark.title??>${bookmark.title}</#if>" minlength="5" required /> <br />
 			</p>
 			<p>
-			
 				<label for="description">Description (optional)</label> <br />
-				<textarea name="description" autocomplete="off" autocapitalize="off" cols=56 rows=4 /></textarea>
+				<textarea id="descriptionTextarea" name="description" autocomplete="off" autocapitalize="off" cols=56 rows=4 value=""><#if bookmark.description??>${bookmark.description}</#if></textarea>
 			</p>
 			<p>
 				<label for="tags">Tags (optional)</label> <br />
-				<input name="tags" autocomplete="off" autocorrect="off" autocapitalize="off" id="tags" size="70" value="" />
+				<input name="tags" autocomplete="off" autocorrect="off" autocapitalize="off" id="tags" size="70" value="<#if (bookmark.tags)??><#list bookmark.tags as tag>${tag}<#if tag_has_next>, </#if></#list></#if>" />
 			</p>
 			<br />
 			<p>
-				<input type="submit" value="Add Bookmark" class="button success small" />
+				<input type="submit" value="Update Bookmark" class="button success small" />
 			</p>
 	</form>
+
 </body>
 
 </html>

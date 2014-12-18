@@ -19,7 +19,6 @@ title="Home">
 					<option value="tag">..By tag</option>
 					<option value="title">..By title</option>
 					<option value="description">..By description</option>
-					<option value="all">..By All</option>
 				</select>
 			</div>
 		</div>
@@ -29,7 +28,11 @@ title="Home">
 <div class='container'>
 	<div class="row">
 		<div class='span eight'>
-			<h1>Search Results</h1>
+			<h1 style="font-weight: 600;">Home</h1>
+			<br />
+			<#if bookmarks?has_content>
+				<h2>Search Results</h2>
+			</#if>
 		</div>
 		<div class='span four'>
 			<h1>Tags</h1>
@@ -37,8 +40,6 @@ title="Home">
 	</div>
 	<div class="row">
 		<div class="span eight" id="bookmarkSearchResults">
-			<div id="lightbox">Testing out the lightbox</div>
-			<a href="#" id="opener">Click me</a>
 			<#if bookmarks?has_content>
 			<#-- If the bookmark list is not null or empty, then iterate thought it-->
 			<#list bookmarks as item>
@@ -51,14 +52,16 @@ title="Home">
 				<ul class="bookmarkTags">
 				<#-- Iterate through the bookmark tags -->
 					<#list item.tags as tag> 
-					<#if tag != ''>
-					<li><a href="/?search=${tag}&searchBy=tag">${tag}&nbsp;</a></li>
-					</#if> 
+						<#if tag != ''>
+							<li><a href="/?search=${tag}&amp;searchBy=tag">${tag}<#if tag_has_next>&nbsp;</#if></a></li>
+						</#if> 
 					</#list>
 				</ul>
 				</#if> <span>Added ${item.dateAdded}</span>
 				<div class="editBookmark">
-					<a href="#">Edit</a>&nbsp; <a href="#"
+				<a href="/bookmark/${item.slug}/edit" target="EditBookmark"
+					onclick="PopupCenter('/bookmark/${item.slug}/edit','EditBookmark','700','350'); return false;"
+					title="Edit bookmark">Edit</a>&nbsp; <a href="javascript:void(0);"
 						onclick="return deleteBookmarkBySlug('${item.slug}')">Delete</a>
 				</div>
 			</div>
@@ -66,10 +69,17 @@ title="Home">
 			<h4>Nothing to show here...</h4>
 			</#if>
 
-
-
 		</div>
-		<div class="span four">Tags....</div>
+		<div class="span four">
+			<div id="tagCloud">
+				<#list tagStats as tagStat>
+					<#assign keys = tagStat?keys>
+						<#list keys as key>
+							<a href="/?search=${key}&amp;searchBy=tag" rel="${tagStat[key]}">${key}</a>
+						</#list>
+				</#list>
+			</div>
+		</div>
 	</div>
 </div>
 
@@ -101,6 +111,24 @@ title="Home">
 		if (keypressed == 13) {
 			$(this).closest('form').submit();
 		}
+	});
+</script>
+
+<script>
+	$.fn.tagcloud.defaults = {
+		size : {
+			start : 20,
+			end : 42,
+			unit : 'pt'
+		},
+		color : {
+			start : '#cde',
+			end : '#f52'
+		}
+	};
+
+	$(function() {
+		$('#tagCloud a').tagcloud();
 	});
 </script>
 

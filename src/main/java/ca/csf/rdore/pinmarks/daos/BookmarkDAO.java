@@ -1,6 +1,7 @@
 package ca.csf.rdore.pinmarks.daos;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 import org.skife.jdbi.v2.sqlobject.Bind;
@@ -8,6 +9,7 @@ import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.GetGeneratedKeys;
 import org.skife.jdbi.v2.sqlobject.SqlBatch;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
+import org.skife.jdbi.v2.sqlobject.SqlStatementCustomizingAnnotation;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLocator;
@@ -15,6 +17,7 @@ import org.skife.jdbi.v2.sqlobject.stringtemplate.UseStringTemplate3StatementLoc
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.jdbi.BookmarkMapper;
+import ca.csf.rdore.pinmarks.jdbi.TagStatsMapper;
 
 @UseStringTemplate3StatementLocator
 @RegisterMapper(BookmarkMapper.class)
@@ -30,6 +33,15 @@ public interface BookmarkDAO {
   @GetGeneratedKeys
   // We need to use the bookmarkID key for the tag table
   int create(@BindBean Bookmark bookmark);
+  
+  @SqlUpdate("UPDATE bookmark SET title = :title, url = :url, description = :description WHERE slug = :slug;")
+  void updateBookmark(@BindBean Bookmark bookmark);
+  
+  @SqlQuery("SELECT id from bookmark where slug = :slug")
+  int getBookmarkIDfromSlug(@Bind("slug") String bookmarkSlug);
+  
+  @SqlUpdate("DELETE FROM bookmarks_tags WHERE bookmark_id = :bookmark_id")
+  void deleteBookmarkTags(@Bind("bookmark_id") int bookmark_id);
 
   @SqlUpdate("INSERT INTO tag (name) values (:name)")
   @GetGeneratedKeys
@@ -113,7 +125,11 @@ GROUP  BY b.id;
   
   @SqlUpdate("DELETE FROM bookmark WHERE slug = :it;")
   void deleteBookmarkBySlug(@Bind String slug);
-
+  
+  @RegisterMapper(TagStatsMapper.class)
+  @SqlQuery("SELECT name, COUNT(*) as num_items FROM bookmarks_tags bt INNER JOIN tag t ON bt.tag_id = t.id GROUP BY name;")
+  List<HashMap<String,Integer>> getTagStats();
+  
   void close();
   
   /* @formatter:on */

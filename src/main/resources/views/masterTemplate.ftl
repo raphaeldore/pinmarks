@@ -9,8 +9,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="/css/bijou.css">
 <link rel="stylesheet" href="/css/site.css">
-<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="/js/modernizr-2.6.2.min.js"></script>
+<script src="/js/jquery-1.9.1.min.js"></script>
+<script src="/js/jquery-migrate-1.2.1.min.js"></script>
+<script src="/js/jquery.tagcloud.js"></script>
 </head>
 
 <body onload="insertSearchTermParamInTextBox();">
@@ -20,8 +22,8 @@
 			<ul class='pull-right'>
 				<li><a href='/'>Home</a></li>
 				<li><a href='/bookmarks'>Bookmarks</a></li>
-				<li><a href="/addBookmark" target="AddBookmark"
-					onclick="PopupCenter('/addBookmark','AddBookmark','700','350'); return false;"
+				<li><a href="/bookmark/add" target="AddBookmark"
+					onclick="PopupCenter('/bookmark/add','AddBookmark','700','350'); return false;"
 					title="Add a bookmark to your collection">Add Bookmark</a></li>
 			</ul>
 		</div>
@@ -74,47 +76,21 @@
 		}
 	</script>
 	<script>
-		var opener = document.getElementById("opener");
-
-		opener.onclick = function() {
-
-			var lightbox = document.getElementById("lightbox"), dimmer = document
-					.createElement("div");
-
-			dimmer.style.width = window.innerWidth + 'px';
-			dimmer.style.height = window.innerHeight + 'px';
-			dimmer.className = 'dimmer';
-
-			dimmer.onclick = function() {
-				document.body.removeChild(this);
-				lightbox.style.visibility = 'hidden';
-			}
-
-			document.body.appendChild(dimmer);
-
-			lightbox.style.visibility = 'visible';
-			lightbox.style.top = window.innerHeight / 2 - 50 + 'px';
-			lightbox.style.left = window.innerWidth / 2 - 100 + 'px';
-			return false;
-		}
-	</script>
-	<script>
 		function deleteBookmarkBySlug(bookmarkSlug) {
 			if (window.confirm("Delete this bookmark?")) {
 				var formData = "bookmarkSlug=" + bookmarkSlug;
 				$.ajax({
-					url : "/delete",
+					url : "/bookmark/delete",
 					type : "DELETE",
 					data : formData,
 					success : function(data, textStatus, jqXHR) {
 						console.log("Server response: " + textStatus);
 						console.log("Removing div...");
 						$('#' + bookmarkSlug).hide('slow', function(){ $('#' + bookmarkSlug).remove(); });
-						// $('#' + bookmarkSlug).fadeOut(300, function(){ $(this).remove();});
 						console.log("..done");
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						console.log(errorThrown);
+						alert("Error: " + errorThrown)
 					}
 				});
 			}

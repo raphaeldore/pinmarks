@@ -58,6 +58,10 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
+			<artifactId>owasp-java-html-sanitizer</artifactId>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -125,6 +129,13 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
 				<version>3.3.2</version>
+			</dependency>
+			<dependency>
+				<groupId>
+					com.googlecode.owasp-java-html-sanitizer
+				</groupId>
+				<artifactId>owasp-java-html-sanitizer</artifactId>
+				<version>r239</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

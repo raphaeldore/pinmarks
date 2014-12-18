@@ -63,7 +63,7 @@ public class IndexResource {
           }
         }
 
-        return new IndexView(listOfFilteredBookmarks);
+        return new IndexView(listOfFilteredBookmarks, bookmarkDao.getTagStats());
       }
 
     } else if (searchBy.toLowerCase().contentEquals("tag")) {
@@ -87,11 +87,11 @@ public class IndexResource {
         }
       }
 
-      return new IndexView(listOfFilteredBookmarks);
+      return new IndexView(listOfFilteredBookmarks, bookmarkDao.getTagStats());
     }
 
     // If the user isn't searching, just show all the bookmarks
-    return new IndexView(bookmarkDao.getAllBookmarksEvolved());
+    return new IndexView(bookmarkDao.getAllBookmarksEvolved(), bookmarkDao.getTagStats());
   }
 
   // root + /delete

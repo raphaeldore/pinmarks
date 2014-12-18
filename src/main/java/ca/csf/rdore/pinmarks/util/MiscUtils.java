@@ -2,6 +2,8 @@ package ca.csf.rdore.pinmarks.util;
 
 import java.util.UUID;
 
+import org.jsoup.Jsoup;
+
 
 /**
  * <p>Miscellaneous helpful utilities</p>
@@ -22,5 +24,9 @@ public class MiscUtils {
     UUID uniqueSlug = UUID.randomUUID();
     String slug = uniqueSlug.toString().replace("-", "");
     return slug;
+  }
+  
+  public static String inputToPureText(String input) {
+    return Jsoup.parse(input).text();
   }
 }

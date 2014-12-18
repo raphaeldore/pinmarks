@@ -106,7 +106,7 @@ type="ca.csf.rdore.pinmarks.views.EditBookmarkView" -->
 								});
 
 							}
-					});
+					});		
 	});
 	</script>
 
@@ -121,7 +121,7 @@ type="ca.csf.rdore.pinmarks.views.EditBookmarkView" -->
 			</p>
 			<p>
 				<label for="description">Description (optional)</label> <br />
-				<textarea name="description" autocomplete="off" autocapitalize="off" cols=56 rows=4 value="<#if bookmark.description??>${bookmark.description}</#if>" /></textarea>
+				<textarea id="descriptionTextarea" name="description" autocomplete="off" autocapitalize="off" cols=56 rows=4 value=""><#if bookmark.description??>${bookmark.description}</#if></textarea>
 			</p>
 			<p>
 				<label for="tags">Tags (optional)</label> <br />

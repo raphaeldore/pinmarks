@@ -1,8 +1,5 @@
 package ca.csf.rdore.pinmarks;
 
-import java.util.HashMap;
-import java.util.List;
-
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.db.DataSourceFactory;

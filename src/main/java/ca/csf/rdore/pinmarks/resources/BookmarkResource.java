@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,8 +24,6 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.joda.time.DateTime;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
-import org.owasp.html.Sanitizers;
-
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
@@ -186,5 +185,41 @@ public class BookmarkResource {
     return Response.status(Status.OK).build();
 
   }
+  
+  @Path("delete")
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @DELETE
+  public Response deleteBookmark(@FormParam("bookmarkSlug") String bookmarkSlug) {
+
+    Response resp;
+
+    if (bookmarkSlug == null) {
+      return Response.status(Status.BAD_REQUEST).build();
+    }
+
+    Bookmark bookmark = bookmarkDao.getBookmarkBySlug(bookmarkSlug);
+
+    if (bookmark == null) {
+      resp = Response.status(Status.NO_CONTENT).build();
+    } else {
+      resp = Response.status(Status.ACCEPTED).build();
+      try {
+        bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
+        resp = Response.status(Status.OK).build();
+      } catch (Exception e) {
+        throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+      }
+    }
+
+    return resp;
+  }
+
+
+  @Path("delete")
+  @GET
+  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() { // return new
+    throw new WebApplicationException(Status.FORBIDDEN);
+  }
+  
 
 }

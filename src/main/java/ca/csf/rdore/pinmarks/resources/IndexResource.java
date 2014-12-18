@@ -94,42 +94,4 @@ public class IndexResource {
     return new IndexView(bookmarkDao.getAllBookmarksEvolved(), bookmarkDao.getTagStats());
   }
 
-  // root + /delete
-  @Path("delete")
-  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-  @DELETE
-  public Response deleteBookmark(@FormParam("bookmarkSlug") String bookmarkSlug,
-      @Context HttpHeaders hh) {
-
-    Response resp;
-
-    if (bookmarkSlug == null) {
-      return Response.status(Status.BAD_REQUEST).build();
-    }
-
-    Bookmark bookmark = bookmarkDao.getBookmarkBySlug(bookmarkSlug);
-
-    if (bookmark == null) {
-      resp = Response.status(Status.NO_CONTENT).build();
-    } else {
-      resp = Response.status(Status.ACCEPTED).build();
-      try {
-        bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
-        resp = Response.status(Status.OK).build();
-      } catch (Exception e) {
-        throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
-      }
-    }
-
-    return resp;
-  }
-
-
-  @Path("delete")
-  @GET
-  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() { // return new
-    throw new WebApplicationException(Status.FORBIDDEN);
-  }
-
-
 }

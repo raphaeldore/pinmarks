@@ -80,18 +80,17 @@
 			if (window.confirm("Delete this bookmark?")) {
 				var formData = "bookmarkSlug=" + bookmarkSlug;
 				$.ajax({
-					url : "/delete",
+					url : "/bookmark/delete",
 					type : "DELETE",
 					data : formData,
 					success : function(data, textStatus, jqXHR) {
 						console.log("Server response: " + textStatus);
 						console.log("Removing div...");
 						$('#' + bookmarkSlug).hide('slow', function(){ $('#' + bookmarkSlug).remove(); });
-						// $('#' + bookmarkSlug).fadeOut(300, function(){ $(this).remove();});
 						console.log("..done");
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						console.log(errorThrown);
+						alert("Error: " + errorThrown)
 					}
 				});
 			}

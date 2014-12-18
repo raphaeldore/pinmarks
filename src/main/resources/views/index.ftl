@@ -61,7 +61,7 @@ title="Home">
 				<div class="editBookmark">
 				<a href="/bookmark/${item.slug}/edit" target="EditBookmark"
 					onclick="PopupCenter('/bookmark/${item.slug}/edit','EditBookmark','700','350'); return false;"
-					title="Edit bookmark">Edit</a>&nbsp; <a href="#"
+					title="Edit bookmark">Edit</a>&nbsp; <a href="javascript:void(0);"
 						onclick="return deleteBookmarkBySlug('${item.slug}')">Delete</a>
 				</div>
 			</div>

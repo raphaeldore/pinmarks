@@ -142,10 +142,20 @@ public class BookmarkResource {
 
     int updatedBookmarkId = bookmarkDao.getBookmarkIDfromSlug(bookmarkSlug);
     System.out.println("UPDATED BOOKMARK ID: " + updatedBookmarkId);
+    
+    PolicyFactory descriptionPolicy =
+        new HtmlPolicyBuilder().allowElements("a").allowElements("b").allowElements("i")
+            .allowUrlProtocols("https").allowAttributes("href").onElements("a")
+            .requireRelNofollowOnLinks().toFactory();
 
-    bookmark.setTitle(title);
+
+    bookmark.setTitle(MiscUtils.inputToPureText(title));
     bookmark.setUrl(url);
-    bookmark.setDescription(description);
+    
+    if (description != null && !description.trim().isEmpty()) {
+      bookmark.setDescription(descriptionPolicy.sanitize(description));
+    }
+    
 
     bookmarkDao.updateBookmark(bookmark);
 

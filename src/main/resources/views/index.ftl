@@ -53,7 +53,7 @@ title="Home">
 				<#-- Iterate through the bookmark tags -->
 					<#list item.tags as tag> 
 						<#if tag != ''>
-							<li><a href="/?search=${tag}&searchBy=tag">${tag}<#if tag_has_next>&nbsp;</#if></a></li>
+							<li><a href="/?search=${tag}&amp;searchBy=tag">${tag}<#if tag_has_next>&nbsp;</#if></a></li>
 						</#if> 
 					</#list>
 				</ul>
@@ -75,7 +75,7 @@ title="Home">
 				<#list tagStats as tagStat>
 					<#assign keys = tagStat?keys>
 						<#list keys as key>
-							<a href="/?search=${key}&searchBy=tag" rel="${tagStat[key]}">${key}</a>
+							<a href="/?search=${key}&amp;searchBy=tag" rel="${tagStat[key]}">${key}</a>
 						</#list>
 				</#list>
 			</div>

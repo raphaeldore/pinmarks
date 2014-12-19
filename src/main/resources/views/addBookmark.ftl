@@ -65,9 +65,20 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 	$().ready(function() {
 		
 		$(function () {
-			  $('#url').val(decodeURIComponent(getUrlParameter('url')));
-			  $('#title').val(decodeURIComponent(getUrlParameter('title')));
-			  $('#description').val(decodeURIComponent(getUrlParameter('description')));
+			if(getUrlParameter('url') != null)
+			{
+				$('#url').val(decodeURIComponent(getUrlParameter('url')));
+			}
+			if(getUrlParameter('title') != null)
+			{
+				$('#title').val(decodeURIComponent(getUrlParameter('title')));
+			}
+			
+			if(getUrlParameter('description') != null)
+			{
+				$('#description').val(decodeURIComponent(getUrlParameter('description')));
+			}
+			
 			});
 		
 		// validate signup form on keyup and submit
@@ -99,7 +110,12 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 									data : $('#addBookmark').serialize(),
 									success : function(data) {
 										//alert("hello");
-										closeWindowAndRefreshParent();
+										if($('#title').val(decodeURIComponent(getUrlParameter('title'))) == null)
+										{
+											closeWindowAndRefreshParent();
+										} else {
+											window.close();
+										}
 									},
 								    error: function(XMLHttpRequest, textStatus, errorThrown) { 
 								        alert("Error: " + errorThrown); 

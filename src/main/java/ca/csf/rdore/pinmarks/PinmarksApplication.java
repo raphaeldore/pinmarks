@@ -14,25 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
-import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.exceptions.RuntimeExceptionMapper;
-import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 import ca.csf.rdore.pinmarks.resources.BookmarkResource;
 import ca.csf.rdore.pinmarks.resources.BookmarksResource;
 import ca.csf.rdore.pinmarks.resources.IndexResource;
-
-// import ca.csf.rdore.pinmarks.health.TemplateHealthCheck;
 
 public class PinmarksApplication extends Application<PinmarksConfiguration> {
   private static final Logger LOGGER = LoggerFactory.getLogger(PinmarksConfiguration.class);
 
   public static void main(String[] args) throws Exception {
     new PinmarksApplication().run(args);
-  }
-
-  @Override
-  public String getName() {
-    return "Hello, World!";
   }
 
   @Override
@@ -64,15 +55,11 @@ public class PinmarksApplication extends Application<PinmarksConfiguration> {
     final DBIFactory factory = new DBIFactory();
     final DBI jdbi = factory.build(environment, configuration.getDataSourceFactory(), "h2");
     final BookmarkDAO bookmarkDao = jdbi.onDemand(BookmarkDAO.class);
-    final TagDAO tagDao = jdbi.onDemand(TagDAO.class);
-    final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
-    environment.healthChecks().register("template", healthCheck);
     environment.jersey().register(new RuntimeExceptionMapper());
-    // environment.jersey().register(resource);
-    environment.jersey().register(new IndexResource(bookmarkDao, tagDao));
-    environment.jersey().register(new BookmarkResource(bookmarkDao, tagDao));
-    environment.jersey().register(new BookmarksResource(bookmarkDao, tagDao));
+    environment.jersey().register(new IndexResource(bookmarkDao));
+    environment.jersey().register(new BookmarkResource(bookmarkDao));
+    environment.jersey().register(new BookmarksResource(bookmarkDao));
   }
 
 }

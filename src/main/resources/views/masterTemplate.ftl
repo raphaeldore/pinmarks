@@ -25,6 +25,7 @@
 				<li><a href="/bookmark/add" target="AddBookmark"
 					onclick="PopupCenter('/bookmark/add','AddBookmark','700','350'); return false;"
 					title="Add a bookmark to your collection">Add Bookmark</a></li>
+				<li><a href="javascript:void%20function(){q=location.href,d=document.getSelection%3Fdocument.getSelection():%22%22,p=document.title,void%20open(%22http://localhost:8080/bookmark/add%3Furl=%22+encodeURIComponent(q)+%22%26description=%22+encodeURIComponent(d)+%22%26title=%22+encodeURIComponent(p),%22Pinboard%22,%22toolbar=no,width=700,height=350%22)}();");">Pinmarks Bookmarklet</a></li>
 			</ul>
 		</div>
 	</div>
@@ -35,6 +36,18 @@
 				Doré</a>
 		</footer>
 	</div>
+<script>
+	function getUrlParameter(sParam) {
+		var sPageURL = window.location.search.substring(1);
+		var sURLVariables = sPageURL.split('&');
+		for (var i = 0; i < sURLVariables.length; i++) {
+			var sParameterName = sURLVariables[i].split('=');
+			if (sParameterName[0] == sParam) {
+				return sParameterName[1];
+			}
+		}
+	}
+</script>
 	<script type="text/javascript">
 		var windowObjectReference = null; // global variable
 

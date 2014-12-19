@@ -43,23 +43,18 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 				return true;
 			}
 		}
-
-		function cancel() {
-			window.close();
-		}
-
-		function closeSelf() {
-			document.forms[0].submit();
-			window.close();
-		}
-		function reloadParent() {
-			if (document.getElementById('url').value != null
-					&& document.getElementById('title').value != null) {
-				window.opener.location.reload(false);
+		
+		function getUrlParameter(sParam) {
+			var sPageURL = window.location.search.substring(1);
+			var sURLVariables = sPageURL.split('&');
+			for (var i = 0; i < sURLVariables.length; i++) {
+				var sParameterName = sURLVariables[i].split('=');
+				if (sParameterName[0] == sParam) {
+					return sParameterName[1];
+				}
 			}
-
 		}
-
+		
 		function closeWindowAndRefreshParent() {
 			opener.location.reload();
 			window.close();
@@ -68,6 +63,12 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 	<script>
 	
 	$().ready(function() {
+		
+		$(function () {
+			  $('#url').val(decodeURIComponent(getUrlParameter('url')));
+			  $('#title').val(decodeURIComponent(getUrlParameter('title')));
+			  $('#description').val(decodeURIComponent(getUrlParameter('description')));
+			});
 		
 		// validate signup form on keyup and submit
 		$("#addBookmark")
@@ -117,12 +118,12 @@ type="ca.csf.rdore.pinmarks.views.AddBookmarkView" -->
 			</p>
 			<p>
 				<label for="title">Title (Required, minimum length: 5)</label><br /> 
-				<input type="text"	autocomplete="off" autocapitalize="off" name="title" size="70"	value="" minlength="5" required /> <br />
+				<input type="text"	autocomplete="off" autocapitalize="off" name="title" id="title" size="70"	value="" minlength="5" required /> <br />
 			</p>
 			<p>
 			
 				<label for="description">Description (optional)</label> <br />
-				<textarea name="description" autocomplete="off" autocapitalize="off" cols=56 rows=4 /></textarea>
+				<textarea name="description" id="description" autocomplete="off" autocapitalize="off" cols=56 rows=4 /></textarea>
 			</p>
 			<p>
 				<label for="tags">Tags (optional)</label> <br />

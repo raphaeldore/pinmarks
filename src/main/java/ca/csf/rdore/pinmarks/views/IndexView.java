@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import ca.csf.rdore.pinmarks.core.Bookmark;
-import ca.csf.rdore.pinmarks.core.Tag;
 
 import com.google.common.base.Charsets;
 

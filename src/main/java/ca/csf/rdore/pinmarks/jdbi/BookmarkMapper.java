@@ -20,7 +20,8 @@ public class BookmarkMapper implements ResultSetMapper<Bookmark> {
 
     if (tags != null && tags.length() != 0) {
       bookmarksTags = Arrays.asList(tags.split("\\s*(=>|,|\\s)\\s*"));
-    } else {
+    } else { 
+      // This is a bad hack. There has to be a better way...
       bookmarksTags.add("");
     }
 

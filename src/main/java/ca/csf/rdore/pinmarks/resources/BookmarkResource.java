@@ -45,6 +45,7 @@ public class BookmarkResource {
     this.bookmarkDao = bookmarkDao;
   }
 
+  // Returns the html view
   @Path("add")
   @GET
   @Produces(MediaType.TEXT_HTML)
@@ -52,6 +53,7 @@ public class BookmarkResource {
     return new AddBookmarkView();
   }
 
+  // Client posts the form to /bookmark/add
   @Path("add")
   @POST
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
@@ -66,10 +68,10 @@ public class BookmarkResource {
     UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_2_SLASHES);
 
     if (!urlValidator.isValid(url)) {
-      // throw new WebApplicationException(Status.BAD_REQUEST);
       return Response.status(new BadURLException(Status.BAD_REQUEST)).build();
     }
 
+    // We want to allow some basic html in the description.
     PolicyFactory descriptionPolicy =
         new HtmlPolicyBuilder().allowElements("a").allowElements("b").allowElements("i")
             .allowUrlProtocols("https").allowAttributes("href").onElements("a")
@@ -78,24 +80,27 @@ public class BookmarkResource {
 
     DateTime dateTime = new DateTime();
     Bookmark bookmark =
-        new Bookmark(MiscUtils.inputToPureText(title), url, descriptionPolicy.sanitize(description), new Timestamp(dateTime.getMillis()),
+        new Bookmark(MiscUtils.inputToPureText(title), url,
+            descriptionPolicy.sanitize(description), new Timestamp(dateTime.getMillis()),
             new ArrayList<String>(), MiscUtils.GenerateRandomSlug());
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     if (tags != null && !tags.isEmpty()) {
 
+      /* @formatter:off */
       tags = MiscUtils.inputToPureText(tags);
-      // Separates by whitespace, by whitespace or comma (,) or arrow (=>), by zero or more
-      // whitespace:
       
-      // We don't want any duplicates
-      Set<String> stringTagsList = new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*")));
-      List<Integer> tag_ids = new ArrayList<Integer>();
-
+      // We don't want any duplicate tags
+      Set<String> stringTagsList =
+          new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"))); // Regex: Separates by whitespace, by whitespace or comma (,) or arrow (=>), by zero or more whitespace:
+      List<Integer> tagIds = new ArrayList<Integer>();
+      /* @formatter:on */
+      
       for (String tag_name : stringTagsList) {
-        tag_ids.add(bookmarkDao.createNewTag(new Tag(tag_name)));
+        tagIds.add(bookmarkDao.createNewTag(new Tag(tag_name)));
       }
-      bookmarkDao.batchInsertIDsIntoJunctionTable(newBookmarkID, tag_ids);
+      
+      bookmarkDao.batchInsertIDsIntoJunctionTable(newBookmarkID, tagIds);
     }
 
     return Response.status(Status.CREATED).build();
@@ -143,7 +148,7 @@ public class BookmarkResource {
 
     int updatedBookmarkId = bookmarkDao.getBookmarkIDfromSlug(bookmarkSlug);
     System.out.println("UPDATED BOOKMARK ID: " + updatedBookmarkId);
-    
+
     PolicyFactory descriptionPolicy =
         new HtmlPolicyBuilder().allowElements("a").allowElements("b").allowElements("i")
             .allowUrlProtocols("https").allowAttributes("href").onElements("a")
@@ -152,42 +157,43 @@ public class BookmarkResource {
 
     bookmark.setTitle(MiscUtils.inputToPureText(title));
     bookmark.setUrl(url);
-    
+
     if (description != null && !description.trim().isEmpty()) {
       bookmark.setDescription(descriptionPolicy.sanitize(description));
     }
-    
+
 
     bookmarkDao.updateBookmark(bookmark);
 
     if (tags != null && !tags.isEmpty()) {
-      List<String> newTags = Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"));
+      Set<String> newTags =
+          new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*")));
       List<String> oldTags = bookmark.getTags();
 
-      List<Integer> tag_ids = new ArrayList<Integer>();
+      List<Integer> tagIds = new ArrayList<Integer>();
 
       if (oldTags == null || oldTags.isEmpty()) {
         for (String tag_name : newTags) {
-          tag_ids.add(bookmarkDao.createNewTag(new Tag(tag_name)));
+          tagIds.add(bookmarkDao.createNewTag(new Tag(tag_name)));
         }
       } else {
         bookmarkDao.deleteBookmarkTags(updatedBookmarkId);
 
         for (String tag_name : newTags) {
-          tag_ids.add(bookmarkDao.createNewTag(new Tag(tag_name)));
+          tagIds.add(bookmarkDao.createNewTag(new Tag(tag_name)));
         }
       }
 
-      bookmarkDao.batchInsertIDsIntoJunctionTable(updatedBookmarkId, tag_ids);
+      bookmarkDao.batchInsertIDsIntoJunctionTable(updatedBookmarkId, tagIds);
 
-    } else if ((tags == null || tags.isEmpty()) && !bookmark.getTags().isEmpty()) {
+    } else if (tags == null && !bookmark.getTags().isEmpty()) {
       bookmarkDao.deleteBookmarkTags(updatedBookmarkId);
     }
 
     return Response.status(Status.OK).build();
 
   }
-  
+
   @Path("delete")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   @DELETE
@@ -219,9 +225,9 @@ public class BookmarkResource {
 
   @Path("delete")
   @GET
-  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() { // return new
+  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() {
     throw new WebApplicationException(Status.FORBIDDEN);
   }
-  
+
 
 }

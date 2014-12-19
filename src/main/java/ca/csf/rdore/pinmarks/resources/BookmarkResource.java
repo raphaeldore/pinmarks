@@ -5,7 +5,9 @@ import io.dropwizard.views.View;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,10 +26,10 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.joda.time.DateTime;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
+
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
-import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.exceptions.BadURLException;
 import ca.csf.rdore.pinmarks.util.MiscUtils;
 import ca.csf.rdore.pinmarks.views.AddBookmarkView;
@@ -38,11 +40,9 @@ import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
 public class BookmarkResource {
 
   BookmarkDAO bookmarkDao;
-  TagDAO tagDao;
 
-  public BookmarkResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
+  public BookmarkResource(BookmarkDAO bookmarkDao) {
     this.bookmarkDao = bookmarkDao;
-    this.tagDao = tagDao;
   }
 
   @Path("add")
@@ -87,7 +87,9 @@ public class BookmarkResource {
       tags = MiscUtils.inputToPureText(tags);
       // Separates by whitespace, by whitespace or comma (,) or arrow (=>), by zero or more
       // whitespace:
-      List<String> stringTagsList = Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"));
+      
+      // We don't want any duplicates
+      Set<String> stringTagsList = new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*")));
       List<Integer> tag_ids = new ArrayList<Integer>();
 
       for (String tag_name : stringTagsList) {

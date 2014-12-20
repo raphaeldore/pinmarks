@@ -60,8 +60,7 @@ public class BookmarkResource {
   public Response addBookmark(@FormParam("title") String title, @FormParam("url") String url,
       @FormParam("description") String description, @FormParam("tags") String tags) {
     if (title == null || title.isEmpty() || url == null || url.isEmpty()) {
-      return Response.status(Status.BAD_REQUEST).entity(new PublicFreemarkerView("errors/400.ftl"))
-          .build();
+      return Response.status(Status.BAD_REQUEST).build();
     }
 
     String[] schemes = {"http", "https"};
@@ -129,8 +128,7 @@ public class BookmarkResource {
       @FormParam("description") String description, @FormParam("tags") String tags) {
 
     if (title == null || title.isEmpty() || url == null || url.isEmpty()) {
-      return Response.status(Status.BAD_REQUEST).entity(new PublicFreemarkerView("errors/400.ftl"))
-          .build();
+      return Response.status(Status.BAD_REQUEST).build();
     }
 
     String[] schemes = {"http", "https"};
@@ -147,7 +145,6 @@ public class BookmarkResource {
     }
 
     int updatedBookmarkId = bookmarkDao.getBookmarkIDfromSlug(bookmarkSlug);
-    System.out.println("UPDATED BOOKMARK ID: " + updatedBookmarkId);
 
     PolicyFactory descriptionPolicy =
         new HtmlPolicyBuilder().allowElements("a").allowElements("b").allowElements("i")
@@ -201,21 +198,21 @@ public class BookmarkResource {
 
     Response resp;
 
-    if (bookmarkSlug == null) {
+    if (bookmarkSlug == null || bookmarkSlug.isEmpty()) {
       return Response.status(Status.BAD_REQUEST).build();
     }
 
     Bookmark bookmark = bookmarkDao.getBookmarkBySlug(bookmarkSlug);
 
     if (bookmark == null) {
-      resp = Response.status(Status.NO_CONTENT).build();
+      resp = Response.status(Status.NOT_FOUND).build();
     } else {
       resp = Response.status(Status.ACCEPTED).build();
       try {
         bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
         resp = Response.status(Status.OK).build();
       } catch (Exception e) {
-        throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+        throw new WebApplicationException(Status.GONE);
       }
     }
 

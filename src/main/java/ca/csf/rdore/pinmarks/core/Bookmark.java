@@ -30,6 +30,8 @@ public class Bookmark {
     setSlug(slug);
   }
 
+  public Bookmark() {  }
+
   public String getTitle() {
     return title;
   }

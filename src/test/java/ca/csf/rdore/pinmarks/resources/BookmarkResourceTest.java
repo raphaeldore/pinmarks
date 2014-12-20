@@ -1,24 +1,16 @@
 package ca.csf.rdore.pinmarks.resources;
 
+import static org.fest.assertions.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.when;
 import io.dropwizard.testing.junit.ResourceTestRule;
-import io.dropwizard.views.ViewBundle;
-import io.dropwizard.views.ViewMessageBodyWriter;
 
-import java.awt.print.Book;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map.Entry;
 
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.*;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.MessageBodyWriter;
-
-import liquibase.changelog.filter.ActuallyExecutedChangeSetFilter;
 
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -26,26 +18,15 @@ import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import static org.fest.assertions.api.Assertions.*;
+import ca.csf.rdore.pinmarks.core.Bookmark;
+import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
+import ca.csf.rdore.pinmarks.util.MiscUtils;
 
-import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.representation.Form;
 import com.sun.jersey.core.impl.provider.entity.FormProvider;
-import com.sun.xml.internal.stream.Entity;
-
-import static org.mockito.Mockito.*;
-import ca.csf.rdore.pinmarks.core.Bookmark;
-import ca.csf.rdore.pinmarks.core.Tag;
-import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
-import ca.csf.rdore.pinmarks.exceptions.AbstractStatusType;
-import ca.csf.rdore.pinmarks.exceptions.BadURLException;
-import ca.csf.rdore.pinmarks.util.MiscUtils;
 
 
 
@@ -58,8 +39,6 @@ public class BookmarkResourceTest {
   public static final ResourceTestRule resources = ResourceTestRule.builder()
       .addResource(new BookmarkResource(dao)).addProvider(FormProvider.class).build();
 
-
-  List<Integer> tagIds = new ArrayList<Integer>(Arrays.asList(1));
   Bookmark bookmark;
 
   @Before
@@ -69,8 +48,6 @@ public class BookmarkResourceTest {
     bookmark =
         new Bookmark("Google", "http://www.google.com", "Google Is Nice", new Timestamp(
             dateTime.getMillis()), new ArrayList<String>(), MiscUtils.GenerateRandomSlug());
-
-    Tag tag_search = new Tag("search");
 
   }
 

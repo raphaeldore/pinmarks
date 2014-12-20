@@ -19,8 +19,6 @@ public class PinmarksApplicationTest {
   
   @Before
   public void setup() throws Exception {
-      //config.setMyParam("yay");
-    
       when(environment.jersey()).thenReturn(jersey);
   }
 

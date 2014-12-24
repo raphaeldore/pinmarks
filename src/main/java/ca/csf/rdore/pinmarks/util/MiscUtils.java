@@ -22,8 +22,7 @@ public class MiscUtils {
    */
   public static String GenerateRandomSlug() {
     UUID uniqueSlug = UUID.randomUUID();
-    String slug = uniqueSlug.toString().replace("-", "");
-    return slug;
+    return uniqueSlug.toString().replace("-", "");
   }
   
   public static String inputToPureText(String input) {

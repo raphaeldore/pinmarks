@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
 
-// Basé sur http://gary-rowe.com/agilestack/2012/10/23/how-to-implement-a-runtimeexceptionmapper-for-dropwizard/
+// Inspired from: http://gary-rowe.com/agilestack/2012/10/23/how-to-implement-a-runtimeexceptionmapper-for-dropwizard/
 @Provider
 public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException> {
 

@@ -11,14 +11,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class Bookmark {
 
-  private String slug; // Random string used for generating the URL, and the delete url.
-
   private String title;
   @NotEmpty
   private String url;
   private String description;
-  // private Set<String> tags = Sets.newHashSet();
   private List<String> tags = new ArrayList<String>();
+  private String slug; // Random string used for generating the URL, and the delete url.
   private Timestamp dateAdded;
 
   // When we create a bookmark, we don't really know its id.
@@ -31,6 +29,8 @@ public class Bookmark {
     setTags(tags);
     setSlug(slug);
   }
+
+  public Bookmark() {  }
 
   public String getTitle() {
     return title;

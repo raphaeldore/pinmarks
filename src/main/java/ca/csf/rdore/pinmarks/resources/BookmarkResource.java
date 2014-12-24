@@ -5,7 +5,9 @@ import io.dropwizard.views.View;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,10 +26,10 @@ import org.apache.commons.validator.routines.UrlValidator;
 import org.joda.time.DateTime;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
+
 import ca.csf.rdore.pinmarks.core.Bookmark;
 import ca.csf.rdore.pinmarks.core.Tag;
 import ca.csf.rdore.pinmarks.daos.BookmarkDAO;
-import ca.csf.rdore.pinmarks.daos.TagDAO;
 import ca.csf.rdore.pinmarks.exceptions.BadURLException;
 import ca.csf.rdore.pinmarks.util.MiscUtils;
 import ca.csf.rdore.pinmarks.views.AddBookmarkView;
@@ -38,13 +40,12 @@ import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
 public class BookmarkResource {
 
   BookmarkDAO bookmarkDao;
-  TagDAO tagDao;
 
-  public BookmarkResource(BookmarkDAO bookmarkDao, TagDAO tagDao) {
+  public BookmarkResource(BookmarkDAO bookmarkDao) {
     this.bookmarkDao = bookmarkDao;
-    this.tagDao = tagDao;
   }
 
+  // Returns the html view
   @Path("add")
   @GET
   @Produces(MediaType.TEXT_HTML)
@@ -52,24 +53,24 @@ public class BookmarkResource {
     return new AddBookmarkView();
   }
 
+  // Client posts the form to /bookmark/add
   @Path("add")
   @POST
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public Response addBookmark(@FormParam("title") String title, @FormParam("url") String url,
       @FormParam("description") String description, @FormParam("tags") String tags) {
     if (title == null || title.isEmpty() || url == null || url.isEmpty()) {
-      return Response.status(Status.BAD_REQUEST).entity(new PublicFreemarkerView("errors/400.ftl"))
-          .build();
+      return Response.status(Status.BAD_REQUEST).build();
     }
 
     String[] schemes = {"http", "https"};
     UrlValidator urlValidator = new UrlValidator(schemes, UrlValidator.ALLOW_2_SLASHES);
 
     if (!urlValidator.isValid(url)) {
-      // throw new WebApplicationException(Status.BAD_REQUEST);
       return Response.status(new BadURLException(Status.BAD_REQUEST)).build();
     }
 
+    // We want to allow some basic html in the description.
     PolicyFactory descriptionPolicy =
         new HtmlPolicyBuilder().allowElements("a").allowElements("b").allowElements("i")
             .allowUrlProtocols("https").allowAttributes("href").onElements("a")
@@ -78,22 +79,27 @@ public class BookmarkResource {
 
     DateTime dateTime = new DateTime();
     Bookmark bookmark =
-        new Bookmark(MiscUtils.inputToPureText(title), url, descriptionPolicy.sanitize(description), new Timestamp(dateTime.getMillis()),
+        new Bookmark(MiscUtils.inputToPureText(title), url,
+            descriptionPolicy.sanitize(description), new Timestamp(dateTime.getMillis()),
             new ArrayList<String>(), MiscUtils.GenerateRandomSlug());
     int newBookmarkID = bookmarkDao.create(bookmark);
 
     if (tags != null && !tags.isEmpty()) {
 
+      /* @formatter:off */
       tags = MiscUtils.inputToPureText(tags);
-      // Separates by whitespace, by whitespace or comma (,) or arrow (=>), by zero or more
-      // whitespace:
-      List<String> stringTagsList = Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"));
-      List<Integer> tag_ids = new ArrayList<Integer>();
-
+      
+      // We don't want any duplicate tags
+      Set<String> stringTagsList =
+          new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"))); // Regex: Separates by whitespace, by whitespace or comma (,) or arrow (=>), by zero or more whitespace:
+      List<Integer> tagIds = new ArrayList<Integer>();
+      /* @formatter:on */
+      
       for (String tag_name : stringTagsList) {
-        tag_ids.add(bookmarkDao.createNewTag(new Tag(tag_name)));
+        tagIds.add(bookmarkDao.createNewTag(new Tag(tag_name)));
       }
-      bookmarkDao.batchInsertIDsIntoJunctionTable(newBookmarkID, tag_ids);
+      
+      bookmarkDao.batchInsertIDsIntoJunctionTable(newBookmarkID, tagIds);
     }
 
     return Response.status(Status.CREATED).build();
@@ -122,8 +128,7 @@ public class BookmarkResource {
       @FormParam("description") String description, @FormParam("tags") String tags) {
 
     if (title == null || title.isEmpty() || url == null || url.isEmpty()) {
-      return Response.status(Status.BAD_REQUEST).entity(new PublicFreemarkerView("errors/400.ftl"))
-          .build();
+      return Response.status(Status.BAD_REQUEST).build();
     }
 
     String[] schemes = {"http", "https"};
@@ -140,8 +145,7 @@ public class BookmarkResource {
     }
 
     int updatedBookmarkId = bookmarkDao.getBookmarkIDfromSlug(bookmarkSlug);
-    System.out.println("UPDATED BOOKMARK ID: " + updatedBookmarkId);
-    
+
     PolicyFactory descriptionPolicy =
         new HtmlPolicyBuilder().allowElements("a").allowElements("b").allowElements("i")
             .allowUrlProtocols("https").allowAttributes("href").onElements("a")
@@ -150,42 +154,43 @@ public class BookmarkResource {
 
     bookmark.setTitle(MiscUtils.inputToPureText(title));
     bookmark.setUrl(url);
-    
+
     if (description != null && !description.trim().isEmpty()) {
       bookmark.setDescription(descriptionPolicy.sanitize(description));
     }
-    
+
 
     bookmarkDao.updateBookmark(bookmark);
 
     if (tags != null && !tags.isEmpty()) {
-      List<String> newTags = Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"));
+      Set<String> newTags =
+          new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*")));
       List<String> oldTags = bookmark.getTags();
 
-      List<Integer> tag_ids = new ArrayList<Integer>();
+      List<Integer> tagIds = new ArrayList<Integer>();
 
       if (oldTags == null || oldTags.isEmpty()) {
         for (String tag_name : newTags) {
-          tag_ids.add(bookmarkDao.createNewTag(new Tag(tag_name)));
+          tagIds.add(bookmarkDao.createNewTag(new Tag(tag_name)));
         }
       } else {
         bookmarkDao.deleteBookmarkTags(updatedBookmarkId);
 
         for (String tag_name : newTags) {
-          tag_ids.add(bookmarkDao.createNewTag(new Tag(tag_name)));
+          tagIds.add(bookmarkDao.createNewTag(new Tag(tag_name)));
         }
       }
 
-      bookmarkDao.batchInsertIDsIntoJunctionTable(updatedBookmarkId, tag_ids);
+      bookmarkDao.batchInsertIDsIntoJunctionTable(updatedBookmarkId, tagIds);
 
-    } else if ((tags == null || tags.isEmpty()) && !bookmark.getTags().isEmpty()) {
+    } else if (tags == null && !bookmark.getTags().isEmpty()) {
       bookmarkDao.deleteBookmarkTags(updatedBookmarkId);
     }
 
     return Response.status(Status.OK).build();
 
   }
-  
+
   @Path("delete")
   @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   @DELETE
@@ -193,21 +198,21 @@ public class BookmarkResource {
 
     Response resp;
 
-    if (bookmarkSlug == null) {
+    if (bookmarkSlug == null || bookmarkSlug.isEmpty()) {
       return Response.status(Status.BAD_REQUEST).build();
     }
 
     Bookmark bookmark = bookmarkDao.getBookmarkBySlug(bookmarkSlug);
 
     if (bookmark == null) {
-      resp = Response.status(Status.NO_CONTENT).build();
+      resp = Response.status(Status.NOT_FOUND).build();
     } else {
       resp = Response.status(Status.ACCEPTED).build();
       try {
         bookmarkDao.deleteBookmarkBySlug(bookmarkSlug);
         resp = Response.status(Status.OK).build();
       } catch (Exception e) {
-        throw new WebApplicationException(Status.INTERNAL_SERVER_ERROR);
+        throw new WebApplicationException(Status.GONE);
       }
     }
 
@@ -217,9 +222,9 @@ public class BookmarkResource {
 
   @Path("delete")
   @GET
-  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() { // return new
+  public WebApplicationException forbidGetRequestsToDeleteBookmarkPage() {
     throw new WebApplicationException(Status.FORBIDDEN);
   }
-  
+
 
 }

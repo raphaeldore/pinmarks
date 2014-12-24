@@ -2,7 +2,6 @@ package ca.csf.rdore.pinmarks.core;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import com.google.common.base.Objects;
 
@@ -17,7 +16,7 @@ public class Tag {
   public String getName() {
     return name;
   }
-  
+
   public void setName(String name) {
     this.name = name;
   }

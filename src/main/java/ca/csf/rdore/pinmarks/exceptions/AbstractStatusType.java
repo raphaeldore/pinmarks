@@ -6,7 +6,7 @@ import javax.ws.rs.core.Response.StatusType;
 
 /**
  * Class used to provide custom StatusTypes, especially for the the Reason Phrase that appears in
- * the HTTP Status Response
+ * the HTTP Status Response.
  * 
  * Source: http://www.codingpedia.org/ama/custom-reason-phrase-in-http-status-error-message-response-with-jax-rs-jersey/
  */

@@ -1,5 +1,3 @@
-template: Hello, %s!
-
 database:
   # the name of your JDBC driver
   driverClass: org.h2.Driver

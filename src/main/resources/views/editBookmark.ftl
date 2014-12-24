@@ -44,23 +44,7 @@ type="ca.csf.rdore.pinmarks.views.EditBookmarkView" -->
 				return true;
 			}
 		}
-
-		function cancel() {
-			window.close();
-		}
-
-		function closeSelf() {
-			document.forms[0].submit();
-			window.close();
-		}
-		function reloadParent() {
-			if (document.getElementById('url').value != null
-					&& document.getElementById('title').value != null) {
-				window.opener.location.reload(false);
-			}
-
-		}
-
+		
 		function closeWindowAndRefreshParent() {
 			opener.location.reload();
 			window.close();

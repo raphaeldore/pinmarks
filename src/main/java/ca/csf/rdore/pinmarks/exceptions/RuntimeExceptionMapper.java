@@ -36,15 +36,20 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
       Response defaultResponse) {
     WebApplicationException webAppException = (WebApplicationException) exception;
 
-    // No logging
+    
+    if (webAppException.getResponse().getStatus() == 400) {
+      return Response.status(Response.Status.BAD_REQUEST)
+          .entity(new PublicFreemarkerView("errors/400.ftl")).build();
+    }
+    
     if (webAppException.getResponse().getStatus() == 401) {
       return Response.status(Response.Status.UNAUTHORIZED)
           .entity(new PublicFreemarkerView("errors/401.ftl")).build();
     }
     
-    if (webAppException.getResponse().getStatus() == 400) {
-      return Response.status(Response.Status.BAD_REQUEST)
-          .entity(new PublicFreemarkerView("errors/400.ftl")).build();
+    if (webAppException.getResponse().getStatus() == 403) {
+      return Response.status(Response.Status.FORBIDDEN)
+          .entity(new PublicFreemarkerView("errors/403.ftl")).build();
     }
     
     if (webAppException.getResponse().getStatus() == 404) {
@@ -52,14 +57,6 @@ public class RuntimeExceptionMapper implements ExceptionMapper<RuntimeException>
           .entity(new PublicFreemarkerView("errors/404.ftl")).build();
     }
     
-    if (webAppException.getResponse().getStatus() == 403) {
-      return Response.status(Response.Status.FORBIDDEN)
-          .entity(new PublicFreemarkerView("errors/403.ftl")).build();
-    }
-
-    // Debug logging
-
-    // Warn logging
 
     // Error logging
     LOGGER.error(exception.getMessage(), exception);

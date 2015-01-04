@@ -59,9 +59,6 @@ public class BookmarkResourceTest {
   @Test
   public void whenSubmittingValidAddBookmarkForm_thenReturnStatusCreated() throws Exception {
 
-    // when(dao.create(any(Bookmark.class))).thenReturn(1);
-    // when(dao.createNewTag(tag_search)).thenReturn(1);
-
     Form submitedForm = new Form();
     submitedForm.add("title", "Google");
     submitedForm.add("url", "http://www.google.com");
@@ -233,26 +230,6 @@ public class BookmarkResourceTest {
 
     assertThat(actualClientResponse.getStatusInfo()).isEqualTo(expectedClientResponseStatus);
   }
-  
-/*  @Test
-  public void whenExeptionIsThrownWhenDeletingBookmark_thenExeptionTypeIsWebApplicationExeption()
-  {
-    when(dao.getBookmarkBySlug(anyString())).thenReturn(bookmark);
-    doThrow(new WebApplicationException(Status.GONE)).when(dao).deleteBookmarkBySlug(bookmark.getSlug());
-    
-    Form submitedForm = new Form();
-    submitedForm.add("bookmarkSlug", bookmark.getSlug());
-    
-    try {
-      final ClientResponse clientResponse =
-          resources.client().resource("/bookmark/delete").type(MediaType.APPLICATION_FORM_URLENCODED)
-              .delete(ClientResponse.class, submitedForm);
-      fail("WebApplicationExeption(Status.GONE) not thrown");
-    } catch (Exception e) {
-     assertThat(e).isNotNull();
-    }
-    
-  }*/
 
   @Test()
   public void whenAccessingBookmarkDeletePageWithAGetRequest_thenReturnForbiddenStatus() {
@@ -265,22 +242,5 @@ public class BookmarkResourceTest {
     
     assertThat(actualClientResponse.getStatusInfo()).isEqualTo(expectedClientResponseStatus);
   }
-
-  /*
-   * @Test public void testAddBookmarkStringStringStringString() throws Exception { throw new
-   * RuntimeException("not yet implemented"); }
-   * 
-   * @Test public void testEditBookmarkString() throws Exception { throw new
-   * RuntimeException("not yet implemented"); }
-   * 
-   * @Test public void testEditBookmarkStringStringStringStringString() throws Exception { throw new
-   * RuntimeException("not yet implemented"); }
-   * 
-   * @Test public void testDeleteBookmark() throws Exception { throw new
-   * RuntimeException("not yet implemented"); }
-   * 
-   * @Test public void testForbidGetRequestsToDeleteBookmarkPage() throws Exception { throw new
-   * RuntimeException("not yet implemented"); }
-   */
 
 }

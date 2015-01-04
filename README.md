@@ -1,7 +1,9 @@
 pinmarks
 ========
 
-Pinmark is a single user bookmarks archiver and organizer tool heavily inspired by pinboard. This is a school project. I am aware that my tests need improvements.
+Pinmark is a single user bookmarks archiver and organizer tool heavily inspired by pinboard written with the Dropwizard java framework. This is a school project.
+
+(I am aware that my tests need improvements!)
 
 The rest of the documentation is in french, sorry!
 

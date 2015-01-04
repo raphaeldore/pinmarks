@@ -34,7 +34,6 @@ import ca.csf.rdore.pinmarks.exceptions.BadURLException;
 import ca.csf.rdore.pinmarks.util.MiscUtils;
 import ca.csf.rdore.pinmarks.views.AddBookmarkView;
 import ca.csf.rdore.pinmarks.views.EditBookmarkView;
-import ca.csf.rdore.pinmarks.views.PublicFreemarkerView;
 
 @Path("/bookmark")
 public class BookmarkResource {
@@ -53,10 +52,10 @@ public class BookmarkResource {
     return new AddBookmarkView();
   }
 
-  // Client posts the form to /bookmark/add
+  // Client posts a form to /bookmark/add
   @Path("add")
   @POST
-  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED) // Only accepts APPLICATION_FORM_URLENCODED post requests 
   public Response addBookmark(@FormParam("title") String title, @FormParam("url") String url,
       @FormParam("description") String description, @FormParam("tags") String tags) {
     if (title == null || title.isEmpty() || url == null || url.isEmpty()) {
@@ -89,9 +88,9 @@ public class BookmarkResource {
       /* @formatter:off */
       tags = MiscUtils.inputToPureText(tags);
       
-      // We don't want any duplicate tags
+      // We don't want any duplicated tags
       Set<String> stringTagsList =
-          new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"))); // Regex: Separates by whitespace, by whitespace or comma (,) or arrow (=>), by zero or more whitespace:
+          new HashSet<String>(Arrays.asList(tags.toLowerCase().split("\\s*(=>|,|\\s)\\s*"))); // Regex: Separates by whitespace, OR by whitespace or comma (,) OR arrow (=>), OR by zero or more whitespace:
       List<Integer> tagIds = new ArrayList<Integer>();
       /* @formatter:on */
       

@@ -25,6 +25,15 @@ public class MiscUtils {
     return uniqueSlug.toString().replace("-", "");
   }
   
+  /**
+   * <p>
+   * Clean/Sanitize a html string of all the html
+   * <p>
+   * 
+   * @param input the string containing the html
+   * @return the cleaned/sanitized string
+   * 
+   */
   public static String inputToPureText(String input) {
     return Jsoup.parse(input).text();
   }

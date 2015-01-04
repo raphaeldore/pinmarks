@@ -3,6 +3,11 @@ pinmarks
 
 Pinmark is a single user bookmarks archiver and organizer tool heavily inspired by pinboard. This is a school project. The rest of the documentation is in french, sorry!
 
+
+![Minesweeper Screenshot](screenshot.png "Pinmarks Screenshot")
+
+
+
 ## Comment importer mon projet dans Eclipse
 Puisque j’utilise Maven, il faut, à partir d’Eclipse (ou IntelliJ), importer le projet maven (Dans Eclipse : `file → Import → Maven → Existing Maven Project`). Ensuite il faut attendre quelques minutes que toutes les dépendances du projet soient téléchargées. En théorie c’est tout ce qu’il y a comme préparations. Si jamais ça ne fonctionne pas, voir l’exemple dans la documentation Dropwizard : [http://dropwizard.io/manual/example.html](http://dropwizard.io/manual/example.html)
 

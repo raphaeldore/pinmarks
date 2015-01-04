@@ -1,7 +1,9 @@
 pinmarks
 ========
 
-Pinmark is a single user bookmarks archiver and organizer tool heavily inspired by pinboard. This is a school project. The rest of the documentation is in french, sorry!
+Pinmark is a single user bookmarks archiver and organizer tool heavily inspired by pinboard. This is a school project. I am aware that my tests need improvements.
+
+The rest of the documentation is in french, sorry!
 
 
 ![Minesweeper Screenshot](screenshot.png "Pinmarks Screenshot")

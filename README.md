@@ -1,7 +1,7 @@
 pinmarks
 ========
 
-Pinmark is a single user bookmarks archiver and organizer tool heavily inspired by pinboard written with the Dropwizard java framework. This is a school project, it is in no way near perfect, and it has many flaws, but it works :).
+Pinmarks is a single user bookmarks archiver and organizer tool heavily inspired by pinboard written with the Dropwizard java framework. This is a school project, it is in no way near perfect, and it has many flaws, but it works :).
 
 (I am aware that my tests need improvements!)
 
@@ -37,7 +37,7 @@ Si vous avez maven d’installer (pas juste dans Eclipse, mais que vous avez mav
 
 Après avoir cloner ce projet, pour satisfaire toutes les dépendances de l’application : `mvn dependency:resolve`
 
-Ensuite, pour compiler le programme et exécuter automatiquement les tests (Si un test ne passe pas, la commande ne fonctionnera pas) : `mvn exec`
+Ensuite, pour compiler le programme et exécuter automatiquement les tests (Si un test ne passe pas, la commande ne fonctionnera pas) : `mvn package`
 
 Dans le dossier target/ il y a maintenant un fichier .jar intitulé `pinmarks-0.0.1-SNAPSHOT.jar`. C’est mon application. À partir du dossier racine, exécutez les commandes suivantes :
 
